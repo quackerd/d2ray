@@ -12,12 +12,12 @@ def randomString(stringLength=16):
     return ''.join(random.choice(letters) for i in range(stringLength))
 
 def usage():
-    print("Usage: python setup.py [options]\n\
-           Options:\n\
-                -h : show usage\n\
-                -d domain : your domain - mydomain.tld\n\
-                [-s subdomain] : your subdomain. Optional.\n\
-                [-e email] : your email. Optional.\n")
+    print("Usage: python setup.py [options]\n\n\
+    options:\n\
+        -h : show usage.\n\
+        -d domain : your domain - mydomain.tld.\n\
+        [-s subdomain] : your subdomain. Optional.\n\
+        [-e email] : your email. Optional.\n")
 
 def main():
     email = None
@@ -106,11 +106,11 @@ def main():
     with open("client.conf", "w") as file:
         file.write(output)
 
-    print("Processed all files. The detailed client config is written to client.conf.\n\
-           Summary:\n\
-           Server Address: " + server_name + "\n\
-           Path: " + v_path + "\n\
-           UUID: " + v_uuid + "\n\n\
-           Please run docker-compose up -d to start the service.")
+    print("Processed all files. The detailed client config is written to client.conf.\n" + \
+           "    Summary:\n" + \
+           "        Server Address: " + server_name + "\n" \
+           "        Path: " + v_path + "\n" \
+           "        UUID: " + str(v_uuid) + "\n" \
+           "Please run docker-compose up -d to start the service.")
 
 main()
