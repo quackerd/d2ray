@@ -1,0 +1,41 @@
+version: '3.4'
+
+networks:
+        br0:
+                external: false
+
+services:
+        nginx:
+                container_name: nginx
+                image: linuxserver/letsencrypt
+                restart: always
+                cap_add:
+                        - NET_ADMIN
+                networks:
+                        - br0
+                environment:
+                        - PUID={{ uid }}
+                        - PGID={{ gid }}
+                        - TZ=US/Eastern
+                        - URL={{ domain }}
+                        - SUBDOMAINS={{ subdomain }}
+                        - VALIDATION=http
+                        - EMAIL={{ email }}
+                        - DHLEVEL=2048
+                        - ONLY_SUBDOMAINS={{ only_sub }}
+                        - STAGING=false
+                ports:
+                        - 80:80
+                        - 443:443
+                volumes:
+                        - ./nginx:/config
+        
+        v2ray:
+                container_name: v2ray
+                image: v2ray/official
+                restart: always
+                networks:
+                        - br0
+                command: ["v2ray","-config=/etc/v2ray/config.json"]
+                volumes:
+                        - ./v2ray:/etc/v2ray
