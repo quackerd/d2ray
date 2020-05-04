@@ -7,8 +7,8 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 - This project basically generates UUID, random paths and uses python to process the templates.
 ## Usage:
 ### Required packages
-- docker-ce
-- docker-compose
+- docker-ce.
+- docker-compose.
 - python-jinja2. A popular python template processor. Just search for jinja2 with your distro's package manager.
 
 ### Building
