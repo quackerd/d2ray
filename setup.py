@@ -101,7 +101,7 @@ def main():
     with open("client.conf", "r") as file:
         template = jinja2.Template(file.read())
 
-    output = template.render(uuid = v_uuid, path = v_path)
+    output = template.render(uuid = v_uuid, path = v_path, server_name = server_name)
 
     with open("client.conf", "w") as file:
         file.write(output)
