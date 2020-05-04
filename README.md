@@ -20,7 +20,7 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 - Do NOT run the python script as root or Nginx won't start.
 
 ### Connecting
-After spinning up all the containers, you can use client.conf to connect. If you are setting it up on your phone
+After spinning up all the containers, you can use client.conf to connect. If you are setting it up on your phone, connect to subdomain.domain.tld:443 and use websocket obfuscation.
 
 ### Troubleshooting
 - Make sure your subdomain.domain.tld points to the server.
