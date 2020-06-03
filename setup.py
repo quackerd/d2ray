@@ -16,6 +16,7 @@ def read_conf(f):
     f = open(f, "r")
     lines = f.readlines()
     for line in lines:
+        line = line.strip()
         eline = line.split(' ')
         if len(eline) >= 2:
             ret[eline[0]] = eline[1]
@@ -43,7 +44,7 @@ def main():
     v_path = None
 
     try:
-        opts , args = getopt.getopt(sys.argv[1:], "hd:s:e:c:u:p:")
+        opts , _ = getopt.getopt(sys.argv[1:], "hd:s:e:c:u:p:")
     except getopt.GetoptError as err:
         print(str(err))
         usage()
