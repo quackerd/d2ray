@@ -11,25 +11,39 @@ def randomString(stringLength=16):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
+def read_conf(f):
+    ret = {}
+    f = open(f, "r")
+    lines = f.readlines()
+    for line in lines:
+        eline = line.split(' ')
+        if len(eline) >= 2:
+            ret[eline[0]] = eline[1]
+    return ret
+
 def usage():
     print("Usage: python setup.py [options]\n\n\
     options:\n\
         -h : show usage.\n\
         -d domain : your domain - mydomain.tld.\n\
+        [-u uuid] : the uuid of the user. Optional.\n\
+        [-p path] : the path of the websocket. Optional.\n\
         [-s subdomain] : your subdomain. Optional.\n\
-        [-e email] : your email. Optional.\n")
+        [-e email] : your email. Optional.\n\
+        [-c conf] : load config from file. Optional.\n\n")
 
 def main():
     email = None
     subdomain = None
     domain = None
+    conf_file = None
     uid = os.getuid()
     gid = os.getgid()
-    v_uuid = uuid.uuid4()
-    v_path = randomString()
+    v_uuid = None
+    v_path = None
 
     try:
-        opts , args = getopt.getopt(sys.argv[1:], "hd:s:e:")
+        opts , args = getopt.getopt(sys.argv[1:], "hd:s:e:c:u:p:")
     except getopt.GetoptError as err:
         print(str(err))
         usage()
@@ -56,6 +70,33 @@ def main():
                 print("Can specify maximum ONE email.")
             else:
                 email = a
+        elif o == "-c":
+            conf_file = a
+        elif o == "-u":
+            v_uuid = a
+        elif o == "-s":
+            v_path = a
+
+    # overwrite stuff with conf file
+    conf = read_conf(conf_file)
+    
+    if "d" in conf:
+        domain = conf["d"]
+    if "s" in conf:
+        subdomain = conf["s"]
+    if "e" in conf:
+        email = conf["e"]
+    if "u" in conf:
+        v_uuid = conf["u"]
+    if "p" in conf:
+        v_path = conf["p"]
+    
+    # generate settings if not specified
+    if v_uuid == None:
+        v_uuid = uuid.uuid4()
+
+    if v_path == None:
+        v_path = randomString()
 
     if domain == None:
         print("Must specify a domain.")
