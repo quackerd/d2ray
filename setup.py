@@ -145,7 +145,7 @@ def main():
 
     output = template.render(uuid = v_uuid, path = v_path, server_name = server_name)
 
-    with open("client.conf", "w") as file:
+    with open("client.json", "w") as file:
         file.write(output)
 
     print("Processed all files. The detailed client config is written to client.conf.\n" + \
