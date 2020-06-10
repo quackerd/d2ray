@@ -32,7 +32,7 @@ services:
         
         v2ray:
                 container_name: v2ray
-                image: v2ray/official
+                image: teddysun/v2ray
                 restart: always
                 networks:
                         - br0
