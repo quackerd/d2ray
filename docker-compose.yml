@@ -39,3 +39,8 @@ services:
                 command: ["v2ray","-config=/etc/v2ray/config.json"]
                 volumes:
                         - ./v2ray:/etc/v2ray
+        watchtower:
+                container_name: watchtower
+                image: containrrr/watchtower
+                volumes:
+                        - /var/run/docker.sock:/var/run/docker.sock
