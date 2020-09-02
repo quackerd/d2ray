@@ -1,7 +1,7 @@
 version: '3.4'
 
 networks:
-        br0:
+        lan:
                 external: false
 
 services:
@@ -12,7 +12,7 @@ services:
                 cap_add:
                         - NET_ADMIN
                 networks:
-                        - br0
+                        - lan
                 environment:
                         - PUID={{ uid }}
                         - PGID={{ gid }}
@@ -35,12 +35,7 @@ services:
                 image: teddysun/v2ray
                 restart: always
                 networks:
-                        - br0
+                        - lan
                 command: ["v2ray","-config=/etc/v2ray/config.json"]
                 volumes:
                         - ./v2ray:/etc/v2ray
-        watchtower:
-                container_name: watchtower
-                image: containrrr/watchtower
-                volumes:
-                        - /var/run/docker.sock:/var/run/docker.sock
