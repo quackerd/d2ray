@@ -7,7 +7,7 @@ networks:
 services:
         nginx:
                 container_name: nginx
-                image: linuxserver/letsencrypt
+                image: linuxserver/swag
                 restart: always
                 cap_add:
                         - NET_ADMIN
