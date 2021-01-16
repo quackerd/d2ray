@@ -20,8 +20,8 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 - Generated files are located in the `build` directory. Run `docker-compose up -d` within that directory to start the stack.
 - To start over or to update the existing configuration. Simply change `config.yml`, rerun `configure.py` and restart the stack.
 
-### Client conf files
-Client conf files are generated 
+### Client connections
+Client conf files are generated in `build/clients/[name]_[uuid]/config.json`. Clients simply need to download the most recent v2ray release and replace `config.json` with the ones generated. The config file by default directly connects to CN mainland websites and proxies foreign websites. The same goes for DNS lookups.
 
 ### Troubleshooting
 - Make sure your subdomain.domain.tld points to the server.
