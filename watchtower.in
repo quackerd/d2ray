@@ -1,0 +1,8 @@
+        watchtower:
+                container_name: v2ray_watchtower
+                image: containrrr/watchtower
+                restart: unless-stopped
+                networks:
+                        - br-v2ray
+                volumes:
+                        - /var/run/docker.sock:/var/run/docker.sock

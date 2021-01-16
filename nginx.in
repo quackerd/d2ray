@@ -17,10 +17,10 @@ server {
 	# all ssl related config moved to ssl.conf
 	include /config/nginx/ssl.conf;
 
-  	server_name  {{server_name}};
+  	server_name  {{ subdomain }}.{{ domain }};
         location /{{ path }} {
         	proxy_redirect off;
-        	proxy_pass http://v2ray:8080;
+        	proxy_pass http://v2ray_v2ray:8080;
         	proxy_http_version 1.1;
         	proxy_set_header Upgrade $http_upgrade;
         	proxy_set_header Connection "upgrade";

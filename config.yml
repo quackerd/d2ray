@@ -1,0 +1,32 @@
+server:
+  # the domain name
+  domain: domain.tld
+  # the subdomain name. leave empty for naked domain.
+  subdomain: example
+  # email. your email for the registered SSL cert. leave empty for a dummy email.
+  email: 
+  # the user/group to run the docker-compose stack.
+  # defaults to the current user
+  # or you can manually set, e.g.:
+  # uid: 1000
+  # gid: 1000
+  uid: 
+  gid: 
+  # the path for websocket. Do NOT include the leading slash. default: auto-generated.
+  path: 
+  # whether or not to enable watchtower to auto update docker containers. default: false
+  watchtower: False
+
+clients:
+  - name: example_user1
+    # default id: auto-generated uuid
+    id: 
+    # default alterid: 64
+    alterid:
+    # port for local socks5. default: 1080
+    port: 
+  - name: example_user2
+    # or you can set them manually
+    id: 5058b990-6be5-438d-9c02-4b06b5d927d0
+    alterid: 32
+    port: 6666

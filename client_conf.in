@@ -68,7 +68,7 @@
 
   "inbounds": [
     {
-      "port": 1080,
+      "port": {{ port }},
       "listen": "127.0.0.1",
       "protocol": "socks",
       "sniffing": {
@@ -88,12 +88,12 @@
       "settings": {
         "vnext": [
           {
-            "address": "{{ server_name }}",
+            "address": "{{ subdomain }}.{{ domain }}",
             "port": 443,
             "users": [
               {
-                "id": "{{ uuid }}",
-                "alterId": 64,
+                "id": "{{ id }}",
+                "alterId": {{ alterid }},
                 "security": "none"
               }
             ]
@@ -104,7 +104,7 @@
         "network": "ws",
         "security": "tls",
         "wsSettings": {
-          "path": "/{{ path }}"
+          "path": "{{ path }}"
         }
       }
     },
