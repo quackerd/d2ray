@@ -1,32 +1,41 @@
 server:
-  # the domain name
+  # domain: the domain name, e.g. google.com
   domain: domain.tld
-  # the subdomain name. leave empty for naked domain.
+  # subdomain: the subdomain name, e.g. write vps for vps.google.com. leave empty for naked domain.
   subdomain: example
-  # email. your email for the registered SSL cert. leave empty for a dummy email.
+  # email: your email for the registered SSL cert. leave empty for a dummy email.
+  # default: dummy@dummy.org
   email: 
-  # the user/group to run the docker-compose stack.
-  # defaults to the current user
-  # or you can manually set, e.g.:
-  # uid: 1000
-  # gid: 1000
+  # uid/gid: the user/group to run the docker-compose stack.
+  # default: the current user
+  # comment: you can also manually set, e.g. uid: 1000 gid: 1000
   uid: 
   gid: 
-  # the path for websocket. Do NOT include the leading slash. default: auto-generated.
+  # path: the path for the websocket. 
+  # default: auto-generated.
+  # comment: Do NOT include the leading slash.
   path: 
-  # whether or not to enable watchtower to auto update docker containers. default: false
+  # watchtower: whether or not to enable watchtower to auto update docker containers
+  # default: False
   watchtower: False
 
 clients:
+  # name: the name of the client, cannot be null
   - name: example_user1
-    # default id: auto-generated uuid
+    # id: the uuid of each user
+    # default: auto-generated uuid
+    # comment: for a managed environment we recommend hardcoding the id:
+    #          the generated id does NOT currently back-propagate to this file 
+    #          you WILL lose existing users if you run configure.py multiple times with blank ids as they will be regenerated with random ids
     id: 
-    # default alterid: 64
+    # alterid: the alterid as appeared in v2ray config file
+    # default: 64
     alterid:
-    # port for local socks5. default: 1080
+    # port: local socks5 proxy port on clients' machines
+    # default: 1080
     port: 
+  # you can also set each field manually like below:
   - name: example_user2
-    # or you can set them manually
     id: 5058b990-6be5-438d-9c02-4b06b5d927d0
     alterid: 32
     port: 6666
