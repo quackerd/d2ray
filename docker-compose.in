@@ -7,8 +7,8 @@ networks:
 services:
         nginx:
                 container_name: v2ray_nginx
-                image: linuxserver/letsencrypt
-                restart: unless-stopped
+                image: linuxserver/swag
+                restart: always
                 cap_add:
                         - NET_ADMIN
                 networks:
