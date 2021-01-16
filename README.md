@@ -1,4 +1,4 @@
-# v2ray-letsencrypt-docker
+# d2ray
 Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official and well-maintained docker containers. No BS private containers.
 
 ## Supports:
