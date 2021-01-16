@@ -8,7 +8,7 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 - Easy multiuser configuration and user conf file generation.
 ## Usage:
 ### Required packages
-- python 3
+- python3.
 - docker-ce.
 - docker-compose.
 - python-jinja2. A popular python template processor. Just search for jinja2 with your distro's package manager.
@@ -22,6 +22,8 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 
 ### Client connections
 Client conf files are generated in `build/clients/[name]_[uuid]/config.json`. Clients simply need to download the most recent v2ray release and replace `config.json` with the ones generated. The config file by default directly connects to CN mainland websites and proxies foreign websites. The same goes for DNS lookups.
+
+You can customize the template file `client_conf.in` to generate custom client conf files.
 
 ### Troubleshooting
 - Make sure your subdomain.domain.tld points to the server.
