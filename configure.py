@@ -80,7 +80,7 @@ class Config:
         self.domain = str(yaml_key_exists_else(conf_srv, 'domain', nullable=False))
         self.email = str(yaml_key_exists_else(conf_srv, 'email', other_val=DEFAULT_EMAIL))
         self.subdomain = str(yaml_key_exists_else(conf_srv, 'subdomain', other_val=""))
-        self.subdomain_only = len(self.subdomain) == 0
+        self.subdomain_only = len(self.subdomain) > 0
         self.uid = int(yaml_key_exists_else(conf_srv, 'uid', other_val=os.getuid()))
         self.gid = int(yaml_key_exists_else(conf_srv, 'gid', other_val=os.getgid()))
         self.path = str(yaml_key_exists_else(conf_srv, 'path', other_val=self.__randomString()))
@@ -100,7 +100,7 @@ def main():
     template_dict['uid'] = conf.uid
     template_dict['gid'] = conf.gid
     template_dict['subdomain'] = conf.subdomain
-    template_dict['subdomain_only'] = conf.subdomain_only
+    template_dict['subdomain_only'] = str(conf.subdomain_only).lower()
     template_dict['domain'] = conf.domain
     template_dict['email'] = conf.email
     template_dict['path'] = conf.path
