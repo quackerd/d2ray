@@ -2,7 +2,7 @@
 Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official and well-maintained docker containers. No BS private containers.
 
 ## Supports:
-- v2ray with websocket + TLS protocol using the [official v2ray docker image](https://hub.docker.com/r/v2ray/official/).
+- v2ray with websocket + TLS protocol using the [teddysun/v2ray](https://hub.docker.com/r/teddysun/v2ray).
 - Nginx frontend and **auto-renewing** Let's Encrypt certificate using the popular [linuxserver/swag](https://hub.docker.com/r/linuxserver/swag/).
 - watchtower for automatic docker image updates (can be disabled) from [containrrr/watchtower](https://hub.docker.com/r/containrrr/watchtower)
 - Easy multiuser configuration and user conf file generation.
