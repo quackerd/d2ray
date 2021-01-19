@@ -8,10 +8,11 @@ Clean, dockerized v2ray(Websocket + TLS) + Nginx + Let's Encrypt with official a
 - Easy multiuser configuration and user conf file generation.
 ## Usage:
 ### Required packages
-- python3.
-- docker-ce.
-- docker-compose.
-- python-jinja2. A popular python template processor. Just search for jinja2 with your distro's package manager.
+- python3: On CentOS 7: `yum install python3`
+- docker-ce
+- docker-compose
+- jinja2: A popular python template processor. Install with `pip3 install jinja2`.
+- pyyaml: Python YAML parser. Install with `pip3 install pyyaml`.
 
 ### Building
 - Clone this repo.
