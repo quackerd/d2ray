@@ -26,6 +26,9 @@ Client conf files are generated in `build/clients/[name]_[uuid]/config.json`. Cl
 
 You can customize the template file `client_conf.in` to generate custom client conf files.
 
+### Updating
+Just `git pull` and merge. `config.yml` might conflict and require manual inspection as new features are added. There should be no other conflicts if you didn't change any template (`.in`) files. An update script is planned. 
+
 ### Troubleshooting
 - Make sure your subdomain.domain.tld points to the server.
 - Use `docker logs v2ray_nginx` to check for nginx init errors. Detailed nginx logs and be found in `nginx/logs/nginx`
