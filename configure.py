@@ -132,15 +132,6 @@ def main():
         template = jinja2.Template(f.read())
     with open(path, "w") as f:
         f.write(template.render(template_dict))
-    
-    # generate NGINX conf
-    with open(NGINX_IN, "r") as f:
-        template = jinja2.Template(f.read())
-    path = os.path.join(OUTPUT_DIR, NGINX_PATH)
-    os.makedirs(path, exist_ok=True)
-    path = os.path.join(path, NGINX_FN)
-    with open(path, "w") as f:
-        f.write(template.render(template_dict))
 
     # generate v2ray conf
     with open(SERVER_IN, "r") as f:

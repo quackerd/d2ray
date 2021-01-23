@@ -1,18 +1,18 @@
 version: '3.0'
 
 networks:
-        br-v2ray:
+        br-xray:
                 external: false
 
 services:
         nginx:
-                container_name: v2ray_nginx
+                container_name: xray_nginx
                 image: linuxserver/swag
-                restart: always
+                restart: unless-stopped
                 cap_add:
                         - NET_ADMIN
                 networks:
-                        - br-v2ray
+                        - br-xray
                 environment:
                         - PUID={{ uid }}
                         - PGID={{ gid }}
@@ -26,18 +26,18 @@ services:
                         - STAGING=false
                 ports:
                         - 80:80
-                        - 443:443
                 volumes:
-                        - ./nginx/default:/config/nginx/site-confs/default
-                        - ./nginx/logs:/config/log
+                        - ./certs:/etc/letsencrypt/live/{{ domain }}
         v2ray:
-                container_name: v2ray_v2ray
-                image: teddysun/v2ray
+                container_name: xray_xray
+                image: teddysun/xray
                 restart: unless-stopped
                 networks:
                         - br-v2ray
-                command: ["v2ray","-config=/etc/v2ray/config.json"]
+                ports:
+                        - 443:443
                 volumes:
-                        - ./v2ray/config.json:/etc/v2ray/config.json
+                        - ./xray/config.json:/etc/xray/config.json
+                        - ./certs:/certs
 
 {{ watchtower }}

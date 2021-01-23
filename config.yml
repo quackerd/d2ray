@@ -27,7 +27,7 @@ clients:
     # comment: for a managed environment we recommend hardcoding the id:
     #          the generated id does NOT currently back-propagate to this file 
     #          you WILL lose existing users if you run configure.py multiple times with blank ids as they will be regenerated with random ids
-    id: 
+    id: ahaha
     # alterid: the alterid as appeared in v2ray config file
     # default: 64
     alterid:

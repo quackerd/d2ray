@@ -1,18 +1,29 @@
 {
   "inbounds": [
     {
-      "port": 8080,
-      "listen":"0.0.0.0",
-      "protocol": "vmess",
+      "port": 443,
+      "protocol": "vless",
       "settings": {
         "clients": [
           {{ clients }}
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": "xray_nginx:80"
+          }
         ]
       },
       "streamSettings": {
-        "network": "ws",
-        "wsSettings": {
-        "path": "/{{ path }}"
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "certificates:": [
+            {
+              "certificateFile": "/certs/fullchain.pem",
+              "keyFile": "/certs/privkey.pem"
+            }
+          ]
         }
       }
     }
