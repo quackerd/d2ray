@@ -8,7 +8,7 @@ server {
   	server_name {{subdomain}}.{{domain}};
 	
 	if ($external) {
-		return 301 https://$host$request_uri
+		return 301 https://$host$request_uri;
 	}
 
 	root /config/www;
