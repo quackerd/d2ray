@@ -21,7 +21,7 @@ d2ray opens 443 and 80. xray listens on 443 with VLESS fallback to Nginx. Nginx 
 - Modify `config.yml` to your liking. Please see the comments in the file for documentation.
 - Run `configure.py` with python 3.
 - Generated files are located in the `build` directory. Run `docker-compose up -d` within that directory to start the stack.
-- To start over or to update the existing configuration. Simply change `config.yml`, rerun `configure.py` and restart the stack.
+- To start over or to update the existing configuration. Simply change `config.yml`, rerun `configure.py` and restart the stack `docker-compose down && docker-compose up -d`.
 
 ### Client connections
 Client conf files are generated in `build/clients/[client name]/config.json`. Clients simply need to download the most recent xray release and replace `config.json` with the ones generated. The config file by default directly connects to CN mainland websites and proxies foreign websites. The same goes for DNS lookups.
@@ -37,6 +37,7 @@ Currently you need to merge conflict yourself. Most likely only `config.yml` unl
 4. Run `git stash pop` to pop your local changes
 5. Manually merge the conflicting files
 6. Run `git add -u` to mark them as conflict resolved
+7. Restart the stack `docker-compose down && docker-compose up -d`
 
 ### Troubleshooting
 #### Basics
