@@ -3,7 +3,7 @@ server:
   domain: domain.tld
   # subdomain: the subdomain name, e.g. write vps for vps.google.com. leave empty for naked domain.
   subdomain: example
-  # loglevel: the loglevel of xray
+  # loglevel: the log level of xray
   # default: warning
   loglevel: 
   # email: your email for the registered SSL cert. leave empty for a dummy email.
