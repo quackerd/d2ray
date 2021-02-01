@@ -1,8 +1,8 @@
         watchtower:
-                container_name: xray_watchtower
+                container_name: d2ray_watchtower
                 image: containrrr/watchtower
                 restart: unless-stopped
                 networks:
-                        - br-xray
+                        - br-d2ray
                 volumes:
                         - /var/run/docker.sock:/var/run/docker.sock

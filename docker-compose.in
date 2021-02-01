@@ -50,7 +50,7 @@ services:
                         d2ray_nginx:
                                 condition: service_healthy
                 networks:
-                        - br-v2ray
+                        - br-d2ray
                 ports:
                         - 443:443
                 volumes:
