@@ -24,7 +24,7 @@ d2ray opens 443 and 80. xray listens on 443 with VLESS fallback to Nginx. Nginx 
 - To start over or to update the existing configuration. Simply change `config.yml`, rerun `configure.py` and restart the stack.
 
 ### Client connections
-Client conf files are generated in `build/clients/[name]_[uuid]/config.json`. Clients simply need to download the most recent xray release and replace `config.json` with the ones generated. The config file by default directly connects to CN mainland websites and proxies foreign websites. The same goes for DNS lookups.
+Client conf files are generated in `build/clients/[client name]/config.json`. Clients simply need to download the most recent xray release and replace `config.json` with the ones generated. The config file by default directly connects to CN mainland websites and proxies foreign websites. The same goes for DNS lookups.
 
 You can customize the template file `client_conf.in` to generate custom client conf files.
 
