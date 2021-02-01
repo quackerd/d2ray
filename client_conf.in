@@ -1,10 +1,4 @@
 {
-    "log": {
-        "error": "error.log",
-        "loglevel": "warning",
-        "access": "access.log"
-    },
-
    "dns": {
     "servers": [
       "223.5.5.5",
@@ -84,7 +78,7 @@
   "outbounds": [
     {
       "tag": "proxy",
-      "protocol": "vmess",
+      "protocol": "vless",
       "settings": {
         "vnext": [
           {
@@ -93,18 +87,20 @@
             "users": [
               {
                 "id": "{{ id }}",
-                "alterId": {{ alterid }},
-                "security": "none"
+                "encryption": "none",
+                "level": 0
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "network": "ws",
-        "security": "tls",
-        "wsSettings": {
-          "path": "{{ path }}"
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "serverName": "{{ subdomain }}.{{ domain }}",
+          "allowInsecure": false,
+          "alpn": ["h2","http/1.1"]
         }
       }
     },

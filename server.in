@@ -1,6 +1,6 @@
 {
   "log": {
-    "loglevel": "warning",
+    "loglevel": {{ loglevel }},
     "access": "/etc/xray/access.log",
     "error": "/etc/xray/error.log"
   },

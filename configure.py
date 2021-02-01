@@ -25,6 +25,7 @@ WATCHTOWER_IN = "watchtower.in"
 DEFAULT_WATCHTOWER_ENABLE = False
 DEFAULT_CLIENT_PORT = 1080
 DEFAULT_USER_FLOW = "xtls-rprx-direct"
+DEFAULT_LOGLEVEL= "warning"
 
 def yaml_key_exists_else(mapping : [], name : str, other_val = None, nullable = True):
     if (name in mapping) and (mapping[name] != None):
@@ -67,7 +68,7 @@ class Config:
         print("    subdomain: " + self.subdomain)
         print("    uid: " + str(self.uid))
         print("    gid: " + str(self.gid))
-        print("    path: " + self.path)
+        print("    loglevel: " + self.loglevel)
         print("    clients:")
         for i in range(len(self.clients)):
             self.clients[i].print(8)
@@ -82,7 +83,7 @@ class Config:
         self.subdomain_only = len(self.subdomain) > 0
         self.uid = int(yaml_key_exists_else(conf_srv, 'uid', other_val=os.getuid()))
         self.gid = int(yaml_key_exists_else(conf_srv, 'gid', other_val=os.getgid()))
-        self.path = str(yaml_key_exists_else(conf_srv, 'path', other_val=random_string()))
+        self.loglevel = str(yaml_key_exists_else(conf_srv, 'loglevel', other_val=DEFAULT_LOGLEVEL))
         self.watchtower = bool(yaml_key_exists_else(conf_srv, 'watchtower', other_val=DEFAULT_WATCHTOWER_ENABLE))
 
         self.clients = []
@@ -102,7 +103,7 @@ def main():
     template_dict['subdomain_only'] = str(conf.subdomain_only).lower()
     template_dict['domain'] = conf.domain
     template_dict['email'] = conf.email
-    template_dict['path'] = conf.path
+    template_dict['loglevel'] = conf.loglevel
 
     if conf.watchtower:
         with open(WATCHTOWER_IN, "r") as f:

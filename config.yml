@@ -3,6 +3,9 @@ server:
   domain: domain.tld
   # subdomain: the subdomain name, e.g. write vps for vps.google.com. leave empty for naked domain.
   subdomain: example
+  # loglevel: the loglevel of xray
+  # default: warning
+  loglevel: 
   # email: your email for the registered SSL cert. leave empty for a dummy email.
   # default: dummy@dummy.org
   email: 
@@ -14,9 +17,6 @@ server:
   # path: the path for the websocket. 
   # default: auto-generated.
   # comment: Do NOT include the leading slash.
-  path: 
-  # watchtower: whether or not to enable watchtower to auto update docker containers
-  # default: False
   watchtower: False
 
 clients:
