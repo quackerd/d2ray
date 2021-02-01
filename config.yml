@@ -14,8 +14,8 @@ server:
   # comment: you can also manually set, e.g. uid: 1000 gid: 1000
   uid: 
   gid: 
-  # watchtower: enable watchtower docker image auto-update?
-  # default: false
+  # watchtower: enable watchtower docker image auto-update
+  # default: False
   watchtower: False
 
 clients:
