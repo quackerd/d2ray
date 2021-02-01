@@ -35,7 +35,6 @@ services:
                 ports:
                         - 80:80
                 volumes:
-<<<<<<< HEAD
                         - ./nginx:/config
                 healthcheck:
                         test: ["CMD", "curl", "-f", "http://{{ subdomain }}.{{ domain }}:80"]
@@ -46,13 +45,6 @@ services:
         d2ray_xray:
                 container_name: d2ray_xray
                 image: teddysun/xray
-=======
-                        - ./config:/config
-                        - ./nginx/default:/config/nginx/site-confs/default
-        v2ray:
-                container_name: v2ray_v2ray
-                image: teddysun/v2ray
->>>>>>> 4216d82bcea88adbdd5a309f030f7ef70a2e1116
                 restart: unless-stopped
                 depends_on:
                         d2ray_nginx:
