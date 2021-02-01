@@ -1,4 +1,9 @@
 {
+  "log": {
+    "loglevel": "warning",
+    "access": "/etc/xray/access.log",
+    "error": "/etc/xray/error.log"
+  },
   "inbounds": [
     {
       "port": 443,
@@ -10,7 +15,7 @@
         "decryption": "none",
         "fallbacks": [
           {
-            "dest": "xray_nginx:80"
+            "dest": "d2ray_nginx:80"
           }
         ]
       },
@@ -18,10 +23,11 @@
         "network": "tcp",
         "security": "xtls",
         "xtlsSettings": {
-          "certificates:": [
+          "alpn": ["http/1.1", "h2"],
+          "certificates": [
             {
-              "certificateFile": "/certs/fullchain.pem",
-              "keyFile": "/certs/privkey.pem"
+              "certificateFile": "/le-etc/letsencrypt/live/{{ subdomain }}.{{ domain }}/fullchain.pem",
+              "keyFile": "/le-etc/letsencrypt/live/{{ subdomain }}.{{ domain }}/privkey.pem"
             }
           ]
         }

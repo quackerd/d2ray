@@ -1,18 +1,26 @@
 version: '3.0'
 
 networks:
-        br-xray:
+        br-d2ray:
                 external: false
+                driver: bridge
+                driver_opts:
+                        com.docker.network.bridge.name: br-d2ray
+                enable_ipv6: false
+                ipam:
+                        driver: default
+                        config:
+                                - subnet: 172.127.127.0/24
 
 services:
-        nginx:
-                container_name: xray_nginx
+        d2ray_nginx:
+                container_name: d2ray_nginx
                 image: linuxserver/swag
                 restart: unless-stopped
                 cap_add:
                         - NET_ADMIN
                 networks:
-                        - br-xray
+                        - br-d2ray
                 environment:
                         - PUID={{ uid }}
                         - PGID={{ gid }}
@@ -27,17 +35,26 @@ services:
                 ports:
                         - 80:80
                 volumes:
-                        - ./certs:/etc/letsencrypt/live/{{ domain }}
-        v2ray:
-                container_name: xray_xray
+                        - ./nginx:/config
+                healthcheck:
+                        test: ["CMD", "curl", "-f", "http://{{ subdomain }}.{{ domain }}:80"]
+                        interval: 5s
+                        timeout: 3s
+                        retries: 30
+
+        d2ray_xray:
+                container_name: d2ray_xray
                 image: teddysun/xray
                 restart: unless-stopped
+                depends_on:
+                        d2ray_nginx:
+                                condition: service_healthy
                 networks:
                         - br-v2ray
                 ports:
                         - 443:443
                 volumes:
-                        - ./xray/config.json:/etc/xray/config.json
-                        - ./certs:/certs
+                        - ./nginx/etc:/le-etc
+                        - ./xray:/etc/xray
 
 {{ watchtower }}

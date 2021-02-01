@@ -1,0 +1,14 @@
+server {
+	listen 80 default_server;
+  	server_name {{ subdomain }}.{{ domain }};
+		
+	if ($remote_addr = 127.0.0.1) {
+		root /config/www;
+		index index.html index.htm index.php;
+	}
+
+	if ($remote_addr != 127.0.0.1) {
+		return 301 https://$host$request_uri;
+	}
+}
+

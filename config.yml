@@ -22,20 +22,21 @@ server:
 clients:
   # name: the name of the client, cannot be null
   - name: example_user1
-    # id: the uuid of each user
-    # default: auto-generated uuid
-    # comment: for a managed environment we recommend hardcoding the id:
+    # id: the password(uuid) of each user
+    # default: auto-generated random string
+    # comment: for a managed environment we recommend hardcoding the id
     #          the generated id does NOT currently back-propagate to this file 
     #          you WILL lose existing users if you run configure.py multiple times with blank ids as they will be regenerated with random ids
-    id: ahaha
-    # alterid: the alterid as appeared in v2ray config file
-    # default: 64
-    alterid:
+    #          NOTE THAT id DOES NOT have to be UUID, can be any string (supported by upstream xray)
+    id: 
+    # flow: the flow parameter of each user
+    # default: xtls-rprx-direct
+    flow:
     # port: local socks5 proxy port on clients' machines
     # default: 1080
     port: 
   # you can also set each field manually like below:
   - name: example_user2
-    id: 5058b990-6be5-438d-9c02-4b06b5d927d0
-    alterid: 32
+    id: example_passwd2
+    flow: xtls-rprx-direct
     port: 6666

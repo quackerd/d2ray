@@ -13,18 +13,18 @@ CLIENT_OUTPUT_DIR = "clients"
 DEFAULT_EMAIL = "dummy@dummy.org"
 CONF_FILE = "config.yml"
 SERVER_IN = "server.in"
-SERVER_PATH = "v2ray"
+SERVER_PATH = "xray"
 SERVER_FN = "config.json"
 NGINX_IN = "nginx.in"
 NGINX_PATH = "nginx"
 NGINX_FN = "default"
-DEFAULT_ALTERID = 64
 CLIENT_OBJ_IN = "client_obj.in"
 CLIENT_CONF_IN = "client_conf.in"
 DOCKER_IN = "docker-compose.in"
 WATCHTOWER_IN = "watchtower.in"
 DEFAULT_WATCHTOWER_ENABLE = False
 DEFAULT_CLIENT_PORT = 1080
+DEFAULT_USER_FLOW = "xtls-rprx-direct"
 
 def yaml_key_exists_else(mapping : [], name : str, other_val = None, nullable = True):
     if (name in mapping) and (mapping[name] != None):
@@ -35,11 +35,15 @@ def yaml_key_exists_else(mapping : [], name : str, other_val = None, nullable = 
         else:
             return other_val
 
+def random_string(stringLength=16):
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(stringLength))
+
 class Client:
     def __init__(self, conf_obj):
         self.name = str(yaml_key_exists_else(conf_obj, 'name', nullable=False))
-        self.id = str(yaml_key_exists_else(conf_obj, 'id', other_val=uuid.uuid4()))
-        self.alterid = int(yaml_key_exists_else(conf_obj,'alterid', other_val=DEFAULT_ALTERID))
+        self.id = str(yaml_key_exists_else(conf_obj, 'id', other_val=random_string()))
+        self.flow = str(yaml_key_exists_else(conf_obj, 'flow', other_val=DEFAULT_USER_FLOW))
         self.port = int(yaml_key_exists_else(conf_obj, 'port', other_val=DEFAULT_CLIENT_PORT))
     
     def print(self, ident):
@@ -49,18 +53,13 @@ class Client:
 
         print(pre + "{")
         print(pre + "   id: " + self.id)
-        print(pre + "   alterid: " + str(self.alterid))
+        print(pre + "   flow: " + self.flow)
         print(pre + "   port: " + str(self.port))
         print(pre + "}")
 
 
 
 class Config:
-    @staticmethod
-    def __randomString(stringLength=16):
-        letters = string.ascii_lowercase
-        return ''.join(random.choice(letters) for i in range(stringLength))
-
     def print(self):
         print("Server configuration:")
         print("    domain: " + self.domain)
@@ -83,7 +82,7 @@ class Config:
         self.subdomain_only = len(self.subdomain) > 0
         self.uid = int(yaml_key_exists_else(conf_srv, 'uid', other_val=os.getuid()))
         self.gid = int(yaml_key_exists_else(conf_srv, 'gid', other_val=os.getgid()))
-        self.path = str(yaml_key_exists_else(conf_srv, 'path', other_val=self.__randomString()))
+        self.path = str(yaml_key_exists_else(conf_srv, 'path', other_val=random_string()))
         self.watchtower = bool(yaml_key_exists_else(conf_srv, 'watchtower', other_val=DEFAULT_WATCHTOWER_ENABLE))
 
         self.clients = []
@@ -118,7 +117,7 @@ def main():
         if i > 0:
             clients += ",\n"
         clients += jinja2.Template(client_obj).render(id = conf.clients[i].id, 
-                                                            alterid = conf.clients[i].alterid)
+                                                            flow = conf.clients[i].flow)
     template_dict['clients'] = clients
 
     print("Generating files...")
@@ -150,8 +149,8 @@ def main():
     for i in range(len(conf.clients)):
         template_dict['id'] = conf.clients[i].id
         template_dict['port'] = conf.clients[i].port
-        template_dict['alterid'] = conf.clients[i].alterid
-        epath = os.path.join(path, conf.clients[i].name + "_" + conf.clients[i].id)
+        template_dict['flow'] = conf.clients[i].flow
+        epath = os.path.join(path, conf.clients[i].name)
         os.makedirs(epath, exist_ok=True)
         with open(os.path.join(epath, SERVER_FN), "w") as f:
             f.write(client_conf_temp.render(template_dict))
