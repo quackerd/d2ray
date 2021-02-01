@@ -41,7 +41,7 @@ Currently you need to merge conflict yourself. Most likely only `config.yml` unl
 ### Troubleshooting
 #### Basics
 - Make sure your subdomain.domain.tld points to the server.
-- Use `docker logs d2ray_nginx` to check for nginx init errors. Detailed nginx logs and be found in `nginx/logs/nginx`
+- Use `docker logs d2ray_nginx` to check for nginx init errors. Detailed nginx logs and be found in `build/nginx/logs/nginx`
 - Use `docker logs d2ray_xray` to check for v2ray init errors.
 - Use `docker logs d2ray_watchtower` to check for watchtower errors.
 - xray log files can be found in `build/xray`
