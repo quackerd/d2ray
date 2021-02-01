@@ -16,7 +16,7 @@ SERVER_IN = "server.in"
 SERVER_PATH = "xray"
 SERVER_FN = "config.json"
 NGINX_IN = "nginx.in"
-NGINX_PATH = "nginx"
+NGINX_PATH = "nginx/nginx/site-confs"
 NGINX_FN = "default"
 CLIENT_OBJ_IN = "client_obj.in"
 CLIENT_CONF_IN = "client_conf.in"
@@ -132,7 +132,16 @@ def main():
     with open(path, "w") as f:
         f.write(template.render(template_dict))
 
-    # generate v2ray conf
+    # generate NGINX conf
+    with open(NGINX_IN, "r") as f:
+        template = jinja2.Template(f.read())
+    path = os.path.join(OUTPUT_DIR, NGINX_PATH)
+    os.makedirs(path, exist_ok=True)
+    path = os.path.join(path, NGINX_FN)
+    with open(path, "w") as f:
+        f.write(template.render(template_dict))
+
+    # generate xray conf
     with open(SERVER_IN, "r") as f:
         template = jinja2.Template(f.read())
     path = os.path.join(OUTPUT_DIR, SERVER_PATH)
