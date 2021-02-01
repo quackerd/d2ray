@@ -26,6 +26,17 @@ DEFAULT_WATCHTOWER_ENABLE = False
 DEFAULT_CLIENT_PORT = 1080
 DEFAULT_USER_FLOW = "xtls-rprx-direct"
 DEFAULT_LOGLEVEL= "warning"
+UUID_NAMESPACE = uuid.UUID('00000000-0000-0000-0000-000000000000')
+
+def calc_uuid5(val):
+    return str(uuid.uuid5(UUID_NAMESPACE, val))
+
+def is_valid_uuid(val):
+    try:
+        uuid.UUID(str(val))
+        return True
+    except ValueError:
+        return False
 
 def yaml_key_exists_else(mapping : [], name : str, other_val = None, nullable = True):
     if (name in mapping) and (mapping[name] != None):
@@ -54,6 +65,7 @@ class Client:
 
         print(pre + "{")
         print(pre + "   id: " + self.id)
+        print(pre + "   uuid: " + (self.id if is_valid_uuid(self.id) else calc_uuid5(self.id)))
         print(pre + "   flow: " + self.flow)
         print(pre + "   port: " + str(self.port))
         print(pre + "}")

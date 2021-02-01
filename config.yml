@@ -22,12 +22,14 @@ server:
 clients:
   # name: the name of the client, cannot be null
   - name: example_user1
-    # id: the password(uuid) of each user
+    # id: the password(uuid) of each user, this can either be a string or an UUID. Please read the "comment" and "IMPORTANT" sections.
     # default: auto-generated random string
     # comment: for a managed environment we recommend hardcoding the id
     #          the generated id does NOT currently back-propagate to this file 
     #          you WILL lose existing users if you run configure.py multiple times with blank ids as they will be regenerated with random ids
-    #          NOTE THAT id DOES NOT have to be UUID, can be any string (supported by upstream xray)
+    #
+    # ! IMPORTANT !: id DOES NOT have to be UUID, can be any string of length 1-30. This is supported by xray but not by some v2ray clients
+    #                if the script detects that id is not a valid UUID, it will also output the equivalent UUID of that string
     id: 
     # flow: the flow parameter of each user
     # default: xtls-rprx-direct
