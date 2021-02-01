@@ -37,7 +37,7 @@ clients:
     # default: 1080
     port: 
   # you can also set each field manually like below:
-  - name: example_user2
-    id: example_passwd2
-    flow: xtls-rprx-direct
-    port: 6666
+  # - name: example_user2
+  #   id: example_passwd2
+  #   flow: xtls-rprx-direct
+  #   port: 6666
