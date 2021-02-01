@@ -1,6 +1,16 @@
+geo $external {
+	default 1;
+	172.127.127.0/24 0;
+}
+
 server {
 	listen 80 default_server;
   	server_name {{subdomain}}.{{domain}};
+	
+	if ($external) {
+		return 301 https://$host$request_uri
+	}
+
 	root /config/www;
 	index index.html index.htm index.php;
 }
