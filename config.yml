@@ -14,9 +14,8 @@ server:
   # comment: you can also manually set, e.g. uid: 1000 gid: 1000
   uid: 
   gid: 
-  # path: the path for the websocket. 
-  # default: auto-generated.
-  # comment: Do NOT include the leading slash.
+  # watchtower: enable watchtower docker image auto-update?
+  # default: false
   watchtower: False
 
 clients:
