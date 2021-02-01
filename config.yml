@@ -30,7 +30,7 @@ clients:
     # ! IMPORTANT !: id DOES NOT have to be UUID, can be any string of length 1-30. This is supported by xray but not by some v2ray clients
     #                if the script detects that id is not a valid UUID, it will also output the equivalent UUID of that string
     id: 
-    # flow: the flow parameter of each user
+    # flow: the flow parameter
     # default: xtls-rprx-direct
     flow:
     # port: local socks5 proxy port on clients' machines
