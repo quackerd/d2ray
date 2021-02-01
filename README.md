@@ -1,8 +1,10 @@
 # d2ray
-Clean, dockerized xray(TCP + XTLS) + Nginx + Let's Encrypt with official and well-maintained docker containers. No private containers.
+Clean, dockerized xray(VLESS + TCP + XTLS) + Nginx + Let's Encrypt with official and well-maintained docker containers. No private containers.
+
+d2ray opens 443 and 80. xray listens on 443 with VLESS fallback to Nginx. Nginx listens on 80 for regular webrequests. Nginx also redirects all HTTP traffic to 443 for HTTPS except for HTTP traffic coming from xray itself.
 
 ## Supports:
-- xray with TCP + XTLS protocol using [teddysun/xray](https://hub.docker.com/r/teddysun/xray/).
+- xray with VLESS + TCP + XTLS protocol using [teddysun/xray](https://hub.docker.com/r/teddysun/xray/).
 - Nginx frontend and **auto-renewing** Let's Encrypt certificate using the popular [linuxserver/swag](https://hub.docker.com/r/linuxserver/swag/).
 - watchtower for automatic docker image updates (can be disabled) from [containrrr/watchtower](https://hub.docker.com/r/containrrr/watchtower)
 - Easy multiuser configuration and user conf file generation.
