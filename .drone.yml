@@ -14,7 +14,7 @@ steps:
       - echo -n "$VERSION,latest" > .tags
       - sed -i -E "s/var_FRP_VERSION/$FRP_VERSION/" Dockerfile
       - apk add openssl
-      - ./gen_uploads.sh
+      - ./gen_upload.sh
 
   - name: build
     image: plugins/docker
