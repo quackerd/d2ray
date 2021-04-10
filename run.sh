@@ -48,7 +48,7 @@ echo ""
 echo "===== Downloading configuration file ====="
 hash=$(echo -n "$FQDN.$SALT" | openssl dgst -md5 | sed -E 's/\(stdin\)= (.*)/\1/')
 echo "Host hash is $hash"
-wget http://$BUCKET_HASH.s3-website-us-west-1.amazonaws.com/config/$hash.conf -P /opt/
+wget http://$BUCKET_HASH.s3-website-us-west-1.amazonaws.com/config/$hash.conf -O /opt/$hash.conf
 openssl aes-256-cbc -d -md sha512 -pbkdf2 -in /opt/$hash.conf -out /opt/$FQDN.conf -k $KEY
 
 echo ""
