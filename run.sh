@@ -58,4 +58,4 @@ nginx -c /opt/nginx.conf
 
 echo ""
 echo "===== Starting xray ====="
-/opt/xray/xray -c /opt/$FQDN.json
+exec /opt/xray/xray -c /opt/$FQDN.json
