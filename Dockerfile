@@ -29,6 +29,6 @@ RUN set -xe && \
     chown -R www:www /opt/nginx /opt/nginx.conf
 
 
-EXPOSE 80,443
+EXPOSE 80 443
 
 CMD ["/opt/run.sh"]
