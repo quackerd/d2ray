@@ -30,7 +30,7 @@ echo ""
 echo "===== Checking Certificates ===="
 if [ ! -d "/etc/letsencrypt/live/$FQDN" ]; then
     echo "Generating new certificates..."
-    certbot certonly -n --standalone -m dummy@dummy.com --agree-tos --no-eff-email -d "$FQDN"
+    certbot certonly -n --standalone -m dummy@dummy.com --agree-tos --no-eff-email -d $FQDN
 else
     echo "Certificate exists. Checking renewal..."
     certbot renew
