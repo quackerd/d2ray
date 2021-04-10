@@ -26,7 +26,7 @@ RUN set -xe && \
     apk del unzip wget && \
     addgroup www && \
     adduser -H -D -S -s /bin/false www -G www && \
-    chown -R www:www /opt/nginx
+    chown -R www:www /opt/nginx /opt/nginx.conf
 
 
 EXPOSE 80,443
