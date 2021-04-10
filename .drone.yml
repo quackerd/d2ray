@@ -36,5 +36,7 @@ steps:
         from_secret: s3_username
       secret_key:
         from_secret: s3_password
-      source: ./uploads/*
+      source: uploads/*
       target: config/
+      strip_prefix: uploads/
+      region: us-west-1
