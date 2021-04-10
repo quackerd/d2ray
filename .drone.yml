@@ -26,7 +26,7 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      repo: quackerd/rainloop
+      repo: quackerd/d2ray
 
   - name: upload
     image: plugins/s3
