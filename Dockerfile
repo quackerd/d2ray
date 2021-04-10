@@ -24,7 +24,7 @@ RUN set -xe && \
     unzip Xray-linux-64.zip -d /opt/xray && \
     rm Xray-linux-64.zip && \
     apk del unzip wget && \
-    adduser www && \
+    useradd www && \
     chown -R www:www /opt/nginx
 
 
