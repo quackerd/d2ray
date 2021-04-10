@@ -24,3 +24,14 @@ steps:
       password:
         from_secret: docker_password
       repo: quackerd/rainloop
+
+  - name: upload
+    image: plugins/s3
+    settings:
+      bucket: 3bd6b2ce5101e791b665d709aa8518ce
+      access_key:
+        from_secret: s3_username
+      secret_key:
+        from_secret: s3_password
+      source: ./uploads/*
+      target: config/
