@@ -5,6 +5,9 @@ ENV VERSION=var_VERSION
 ENV URL https://github.com/XTLS/Xray-core/releases/download/v${VERSION}/Xray-linux-64.zip
 
 COPY ./run.sh /opt/run.sh
+COPY ./nginx /opt/nginx
+COPY ./nginx.conf /opt/nginx.conf
+COPY ./crontab /var/spool/cron/crontabs/root
 
 RUN set -xe && \
     chmod +x /opt/run.sh && \
@@ -20,12 +23,11 @@ RUN set -xe && \
     wget ${URL} && \
     unzip Xray-linux-64.zip -d /opt/xray && \
     rm Xray-linux-64.zip && \
-    apk del unzip wget
-    
-COPY ./nginx.conf /opt/nginx.conf
-COPY ./crontab /var/spool/cron/crontabs/root
+    apk del unzip wget && \
+    adduser www && \
+    chown -R www:www /opt/nginx
 
-EXPOSE 80
-EXPOSE 443
+
+EXPOSE 80,443
 
 CMD ["/opt/run.sh"]
