@@ -3,7 +3,7 @@
 set +e
 
 BUCKET_HASH=3bd6b2ce5101e791b665d709aa8518ce
-
+echo ""
 echo "===== Checking Environment Variables ====="
 if [ -z "$FQDN" ]; then
     echo "FQDN must be set"
@@ -26,10 +26,7 @@ else
     echo "KEY = $KEY"
 fi
 
-echo "===== Setting Up Environment ======"
-rm -rf /etc/letsencrypt
-ln -s /opt/config/certs /etc/letsencrypt
-
+echo ""
 echo "===== Checking Certificates ===="
 if [ ! -d "/etc/letsencrypt/live/$FQDN" ]; then
     echo "Generating new certificates..."
@@ -39,15 +36,18 @@ else
     certbot renew
 fi
 
+echo ""
 echo "===== Downloading configuration file ====="
 hash=$(echo -n "$FQDN.$SALT" | openssl dgst -md5 | sed -E 's/\(stdin\)= (.*)/\1/')
 echo "Host hash is $hash"
 wget http://$BUCKET_HASH.s3-website-us-west-1.amazonaws.com/config/$hash.conf -P /opt/
 openssl aes-256-cbc -d -md sha512 -pbkdf2 -in /opt/$hash.conf -out /opt/$FQDN.conf -k $KEY
 
+echo ""
 echo "===== Starting services ====="
 crond -L /opt/config/logs/crond/log.txt
 nginx -c /opt/nginx.conf
 
+echo ""
 echo "===== Starting xray ====="
 /opt/xray/xray -c /opt/$FQDN.conf
