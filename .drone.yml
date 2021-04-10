@@ -1,0 +1,26 @@
+kind: pipeline
+type: docker
+name: Docker image build
+
+trigger:
+  branch:
+    - master
+
+    
+steps:
+  - name: config
+    image: alpine
+    commands:
+      - echo -n "$VERSION,latest" > .tags
+      - sed -i -E "s/var_FRP_VERSION/$FRP_VERSION/" Dockerfile
+      - apk add openssl
+      - ./gen_uploads.sh
+
+  - name: build
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: quackerd/rainloop

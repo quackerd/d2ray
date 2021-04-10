@@ -1,8 +1,8 @@
 {
   "log": {
-    "loglevel": "{{ loglevel }}",
-    "access": "/etc/xray/access.log",
-    "error": "/etc/xray/error.log"
+    "loglevel": "debug",
+    "access": "/opt/config/xray/access.log",
+    "error": "/opt/config/xray/error.log"
   },
   "inbounds": [
     {
@@ -10,12 +10,15 @@
       "protocol": "vless",
       "settings": {
         "clients": [
-          {{ clients }}
+          {
+            "id": "zsy",
+            "flow": "xtls-rprx-direct"
+          }
         ],
         "decryption": "none",
         "fallbacks": [
           {
-            "dest": "d2ray_nginx:80"
+            "dest": "localhost:80"
           }
         ]
       },
@@ -26,8 +29,8 @@
           "alpn": ["http/1.1", "h2"],
           "certificates": [
             {
-              "certificateFile": "/le-etc/letsencrypt/live/{{ subdomain }}.{{ domain }}/fullchain.pem",
-              "keyFile": "/le-etc/letsencrypt/live/{{ subdomain }}.{{ domain }}/privkey.pem"
+              "certificateFile": "/etc/letsencrypt/live/concerto.quacker.net/fullchain.pem",
+              "keyFile": "/etc/letsencrypt/live/concerto.quacker.net/privkey.pem"
             }
           ]
         }
