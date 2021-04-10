@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set +e
+set +xe
 
 mkdir -p /opt/config
 mkdir -p /opt/config/logs
@@ -59,3 +59,5 @@ nginx -c /opt/nginx.conf
 echo ""
 echo "===== Starting xray ====="
 /opt/xray/xray -c /opt/$FQDN.conf
+
+sleep 60
