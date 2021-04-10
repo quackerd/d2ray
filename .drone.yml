@@ -6,13 +6,15 @@ trigger:
   branch:
     - master
 
+environment:
+  VERSION: 1.4.2
     
 steps:
   - name: config
     image: alpine
     commands:
       - echo -n "$VERSION,latest" > .tags
-      - sed -i -E "s/var_FRP_VERSION/$FRP_VERSION/" Dockerfile
+      - sed -i -E "s/var_VERSION/$VERSION/" Dockerfile
       - apk add openssl
       - chmod +x ./gen_upload.sh
       - ./gen_upload.sh
