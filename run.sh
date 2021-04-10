@@ -2,7 +2,15 @@
 
 set +e
 
+mkdir -p /opt/config
+mkdir -p /opt/config/logs
+mkdir -p /opt/config/certs
+mkdir -p /opt/config/logs/nginx
+mkdir -p /opt/config/logs/xray
+mkdir -p /opt/config/logs/crond
+
 BUCKET_HASH=3bd6b2ce5101e791b665d709aa8518ce
+
 echo ""
 echo "===== Checking Environment Variables ====="
 if [ -z "$FQDN" ]; then
