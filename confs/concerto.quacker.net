@@ -1,8 +1,8 @@
 {
   "log": {
     "loglevel": "debug",
-    "access": "/opt/config/xray/access.log",
-    "error": "/opt/config/xray/error.log"
+    "access": "/opt/config/logs/xray/access.log",
+    "error": "/opt/config/logs/xray/error.log"
   },
   "inbounds": [
     {
