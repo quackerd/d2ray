@@ -1,4 +1,6 @@
 # d2ray
+[![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
+
 Clean, dockerized xray(VLESS + TCP + XTLS) + Nginx + Let's Encrypt with official and well-maintained docker containers. No private containers.
 
 d2ray opens 443 and 80. xray listens on 443 with VLESS fallback to Nginx. Nginx listens on 80 for regular webrequests. Nginx also redirects all HTTP traffic to 443 for HTTPS except for HTTP traffic coming from xray itself.
