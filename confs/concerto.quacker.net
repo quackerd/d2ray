@@ -13,6 +13,10 @@
           {
             "id": "zsy",
             "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "lxd",
+            "flow": "xtls-rprx-direct"
           }
         ],
         "decryption": "none",
