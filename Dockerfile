@@ -6,7 +6,6 @@ ENV URL https://github.com/XTLS/Xray-core/releases/download/v${VERSION}/Xray-lin
 
 COPY ./run.sh /opt/run.sh
 COPY ./nginx /opt/nginx
-COPY ./nginx.conf /opt/nginx.conf
 COPY ./crontab /var/spool/cron/crontabs/root
 
 RUN set -xe && \
@@ -26,7 +25,7 @@ RUN set -xe && \
     apk del unzip wget && \
     addgroup www && \
     adduser -H -D -S -s /bin/false www -G www && \
-    chown -R www:www /opt/nginx /opt/nginx.conf
+    chown -R www:www /opt/nginx
 
 
 EXPOSE 80 443
