@@ -24,3 +24,9 @@ steps:
       password:
         from_secret: docker_password
       repo: quackerd/d2ray
+  
+  - name: refresh
+    image: alpine
+    commands:
+      - chmod +x ./refresh.sh
+      - ./refresh.sh

@@ -1,0 +1,11 @@
+- hosts: '{{ target }}'
+  gather_facts: false
+  become: true
+  remote_user: root
+  any_errors_fatal: yes
+  tasks:
+    - name: add root ssh key
+      ansible.posix.authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', './id_root.pub') }}"
