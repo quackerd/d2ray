@@ -5,14 +5,6 @@ networks:
                 external: false
 
 services:
-        watchtower:
-                container_name: d2ray_watchtower
-                restart: unless-stopped
-                image: containrrr/watchtower
-                networks:
-                        - br-d2ray
-                volumes:
-                        - /var/run/docker.sock:/var/run/docker.sock
         d2ray:
                 container_name: d2ray
                 image: quackerd/d2ray
@@ -32,7 +24,7 @@ services:
 
         d2ray_nextcloud:
                 container_name: d2ray_nextcloud
-                image: nextcloud/nextcloud
+                image: nextcloud
                 networks:
                         - br-d2ray
                 restart: unless-stopped
