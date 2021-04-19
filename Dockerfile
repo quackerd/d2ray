@@ -31,4 +31,4 @@ RUN set -xe && \
 
 EXPOSE 80 443
 
-CMD ["/opt/wait_for_it.sh", "d2ray_nextcloud:8080", "--", "sh", "/opt/run.sh"]
+CMD ["/opt/wait_for_it.sh", "d2ray_nextcloud:80", "--", "sh", "/opt/run.sh"]
