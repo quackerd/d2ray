@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+apk add openssh
+
 chmod 0600 ansible/id_root
 
 for filename in confs/*; do
