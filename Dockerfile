@@ -10,7 +10,6 @@ COPY image/crontab /var/spool/cron/crontabs/root
 COPY image/wait_for_it.sh /opt/wait_for_it.sh
 
 RUN set -xe && \
-    chmod +x /opt/run.sh && \
     mkdir -p /opt/config && \
     mkdir -p /opt/config/logs && \
     mkdir -p /opt/config/certs && \
@@ -32,4 +31,4 @@ RUN set -xe && \
 
 EXPOSE 80 443
 
-CMD ["/opt/wait_for_it.sh d2ray_nextcloud:80 --timeout=60 --strict -- /opt/run.sh"]
+CMD ["/opt/wait_for_it.sh", "d2ray_nextcloud:80", "--timeout=60", "--strict", "/opt/run.sh"]
