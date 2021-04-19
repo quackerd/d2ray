@@ -19,7 +19,7 @@ RUN set -xe && \
     mkdir -p /opt/config/logs/crond && \
     mkdir -p /opt/xray && \
     ln -s /opt/config/certs /etc/letsencrypt && \
-    apk add --no-cache unzip wget nginx certbot openssl bash && \
+    apk add --no-cache unzip wget nginx certbot openssh bash && \
     wget ${URL} && \
     unzip Xray-linux-64.zip -d /opt/xray && \
     rm Xray-linux-64.zip && \
