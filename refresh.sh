@@ -17,8 +17,6 @@ for filename in confs/*; do
                                                                                 /usr/local/bin/docker-compose pull &&
                                                                                 /usr/local/bin/docker-compose up -d &&
                                                                                 docker system prune -a -f"
-    
-     && /usr/local/bin/docker-compose pull && /usr/local/bin/docker-compose down && /usr/local/bin/docker-compose up -d"
 done
 
 wait
