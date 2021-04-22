@@ -1,1 +1,1 @@
-0 1 * * * certbot renew
+0 */24 * * * certbot renew

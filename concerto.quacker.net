@@ -1,0 +1,50 @@
+{
+  "log": {
+    "loglevel": "debug",
+    "access": "/opt/config/logs/xray/access.log",
+    "error": "/opt/config/logs/xray/error.log"
+  },
+  "inbounds": [
+    {
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "zsy",
+            "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "lxd",
+            "flow": "xtls-rprx-direct"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "dest": "localhost:80"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "alpn": ["http/1.1", "h2"],
+          "certificates": [
+            {
+              "certificateFile": "/etc/letsencrypt/live/concerto.quacker.net/fullchain.pem",
+              "keyFile": "/etc/letsencrypt/live/concerto.quacker.net/privkey.pem"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    }
+  ]
+}

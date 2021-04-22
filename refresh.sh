@@ -1,24 +1,22 @@
 #!/bin/sh
 set -e
 
-apk add openssh
-
-chmod 0600 ansible/id_root
+key=$(cat ./key)
 
 for filename in confs/*; do
     addr=$(basename $filename)
     echo "Refreshing $addr..."
-    cp docker-compose.yml docker-compose.yml.tmp
-    sed -i -E "s/var_hostname/$addr/g" docker-compose.yml.tmp
-    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "mkdir -p /opt/d2ray && \
-                                                                                cd /opt/d2ray && \
-                                                                                /usr/local/bin/docker-compose down"    
-    scp -P 77 -o StrictHostKeychecking=no -i ansible/id_root docker-compose.yml.tmp root@$addr:/opt/d2ray/docker-compose.yml
-    scp -P 77 -o StrictHostKeychecking=no -i ansible/id_root $filename root@$addr:/opt/d2ray/config.json
-    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "cd /opt/d2ray && \
-                                                                                /usr/local/bin/docker-compose pull &&
-                                                                                /usr/local/bin/docker-compose up -d &&
-                                                                                docker system prune -a -f"
+    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker pull quackerd/d2ray:latest"
+    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker stop d2ray"
+    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker run -d \
+                                                                         -e KEY=$key \
+                                                                         -e FQDN=$addr \
+                                                                         -p 80:80 \
+                                                                         -p 443:443 \
+                                                                         -v d2ray_volume:/opt/config \
+                                                                         --name d2ray \
+                                                                         quackerd/d2ray:latest"
+    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker system prune -af"
 done
 
 wait
