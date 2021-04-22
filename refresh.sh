@@ -12,9 +12,10 @@ for filename in confs/*; do
     echo "Refreshing $addr..."
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker pull quackerd/d2ray:latest"
     set +e
-    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker stop d2ray"
+    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker stop d2ray && docker rm d2ray"
     set -e
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker run -d \
+                                                                         --restart unless-stopped \
                                                                          -e KEY=$key \
                                                                          -e FQDN=$addr \
                                                                          -p 80:80 \
