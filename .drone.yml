@@ -21,7 +21,7 @@ steps:
     commands:
       - apk add openssl
       - chmod +x ./encrypt_upload.sh
-      - encrypt_upload.sh
+      - ./encrypt_upload.sh
 
   - name: build
     image: plugins/docker
