@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xe
+set -e
 
 apk add openssh openssl
 
@@ -14,6 +14,6 @@ for filename in confs/*; do
     output=$crypt_ret
     encrypt "$(cat $filename)" $(cat ./key)
     echo "$crypt_ret" > $output
-    scp -P77 -i ansible/id_root $output root@parrot.quacker.org:/dat/apps/nginx/http_dl/root/pub
+    scp -P77 -o StrictHostKeychecking=no -i ansible/id_root $output root@parrot.quacker.org:/dat/apps/nginx/http_dl/root/pub
     rm $output
 done

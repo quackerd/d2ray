@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -xe
+set -e
 
 source /opt/crypt.sh
 
