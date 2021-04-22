@@ -16,8 +16,8 @@ for filename in confs/*; do
     set -e
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker run -d \
                                                                          --restart unless-stopped \
-                                                                         -e KEY='$key' \
-                                                                         -e FQDN='$addr' \
+                                                                         -e KEY=$key \
+                                                                         -e FQDN=$addr \
                                                                          -p 80:80 \
                                                                          -p 443:443 \
                                                                          -v d2ray_volume:/opt/config \
