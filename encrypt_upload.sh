@@ -1,5 +1,9 @@
 #!/bin/sh
 
+set -xe
+
+apk add openssh openssl
+
 source image/crypt.sh
 
 mkdir -p enc
