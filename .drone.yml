@@ -13,12 +13,14 @@ steps:
   - name: config
     image: alpine
     commands:
+      - set +e
       - echo -n "$VERSION,latest" > .tags
       - sed -i -E "s/var_VERSION/$VERSION/" Dockerfile
 
   - name: upload
     image: alpine
     commands:
+      - set +e
       - apk add openssl
       - chmod +x ./encrypt_upload.sh
       - ./encrypt_upload.sh
@@ -35,6 +37,7 @@ steps:
   - name: refresh
     image: alpine
     commands:
+      - set +e
       - apk add openssh
       - chmod +x ./refresh.sh
       - ./refresh.sh
