@@ -11,7 +11,9 @@ for filename in confs/*; do
     addr=$(basename $filename)
     echo "Refreshing $addr..."
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker pull quackerd/d2ray:latest"
+    set +e
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker stop d2ray"
+    set -e
     ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker run -d \
                                                                          -e KEY=$key \
                                                                          -e FQDN=$addr \
