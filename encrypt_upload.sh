@@ -6,7 +6,7 @@ apk add openssh openssl
 
 source image/crypt.sh
 
-mkdir -p enc
+chmod 600 ansible/id_root
 
 for filename in confs/*; do
     basename=$(basename $filename)

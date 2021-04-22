@@ -5,6 +5,8 @@ apk add openssh
 
 key=$(cat ./key)
 
+chmod 600 ansible/id_root
+
 for filename in confs/*; do
     addr=$(basename $filename)
     echo "Refreshing $addr..."
