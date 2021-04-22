@@ -37,16 +37,16 @@ fi
 
 echo ""
 echo "===== Fetching Configuration ===="
-decrypt $URL $key
+decrypt $URL $KEY
 URL=$crypt_ret
 
 echo "Fetching from $URL..."
-hash_sha256 $FQDN $key
+hash_sha256 $FQDN $KEY
 URL=$URL/$crypt_ret
 wget $URL -O /opt/$FQDN
 
 echo "Decrypting..."
-decrypt $(cat /opt/$FQDN) $key
+decrypt $(cat /opt/$FQDN) $KEY
 echo $crypt_ret > /opt/config.json
 
 echo ""
