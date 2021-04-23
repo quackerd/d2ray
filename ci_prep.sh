@@ -30,7 +30,9 @@ URL_XRAY_WIN=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray
 URL_XRAY_MAC=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-macos-64.zip
 URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
 
-wget $URL_SO -O zip/chrome/SwitchyOmega_Chromium.zip
+wget $URL_SO -O SwitchyOmega_Chromium.zip
+mkdir zip/chrome/SwitchyOmega
+unzip ./SwitchyOmega_Chromium.zip -d zip/chrome/SwitchyOmega
 wget $URL_NG -P image/nginx/download/android/
 wget $URL_XRAY_WIN -P zip/windows/
 wget $URL_XRAY_MAC -P zip/macos/
