@@ -30,14 +30,14 @@ URL_XRAY_WIN=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray
 URL_XRAY_MAC=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-macos-64.zip
 URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
 
-wget $URL_SO -P zip/chrome/
-wget $URL_NG -P image/nginx/index/android/
+wget $URL_SO -O zip/chrome/SwitchyOmega_Chromium.zip
+wget $URL_NG -P image/nginx/download/android/
 wget $URL_XRAY_WIN -P zip/windows/
 wget $URL_XRAY_MAC -P zip/macos/
 wget $URL_XRAY_LINUX -P image/
 
 zip -r pc.zip zip/
-mv pc.zip image/nginx/index/
+mv pc.zip image/nginx/download/
 
 # build htpassword
 touch .htpasswd
