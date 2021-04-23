@@ -17,6 +17,14 @@
           {
             "id": "e6569ab4-c0dd-4c29-9b29-5afef6a39a92",
             "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "ruyuechun",
+            "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "liangyifang",
+            "flow": "xtls-rprx-direct"
           }
         ],
         "decryption": "none",
