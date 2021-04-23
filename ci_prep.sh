@@ -32,7 +32,7 @@ URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xr
 
 wget $URL_SO -O SwitchyOmega_Chromium.zip
 mkdir zip/chrome/SwitchyOmega
-unzip ./SwitchyOmega_Chromium.zip -d zip/chrome/SwitchyOmega || True
+unzip ./SwitchyOmega_Chromium.zip -d zip/chrome/SwitchyOmega || true
 wget $URL_NG -P image/nginx/download/android/
 wget $URL_XRAY_WIN -P zip/windows/
 wget $URL_XRAY_MAC -P zip/macos/
