@@ -2,7 +2,7 @@
 
 set -e
 
-apk add openssh openssl wget unzip
+apk add openssh openssl wget unzip zip
 
 source image/crypt.sh
 
