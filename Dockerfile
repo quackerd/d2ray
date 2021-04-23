@@ -1,32 +1,27 @@
 FROM alpine:latest
 
+COPY image/ /opt/
 
-ENV VERSION=var_VERSION
-ENV URL https://github.com/XTLS/Xray-core/releases/download/v${VERSION}/Xray-linux-64.zip
+# install packages
+RUN set -xe && apk add --no-cache unzip wget nginx certbot openssl
 
-COPY image/run.sh /opt/run.sh
-COPY image/crypt.sh /opt/crypt.sh
-COPY image/nginx /opt/nginx
-COPY image/crontab /var/spool/cron/crontabs/root
-
-RUN set -xe && \
-    mkdir -p /opt/config && \
-    mkdir -p /opt/config/logs && \
-    mkdir -p /opt/config/certs && \
-    mkdir -p /opt/config/logs/nginx && \
-    mkdir -p /opt/config/logs/xray && \
-    mkdir -p /opt/config/logs/crond && \
-    mkdir -p /opt/xray && \
+# setup core files
+RUN set -xe && mkdir -p /opt/xray && \
     ln -s /opt/config/certs /etc/letsencrypt && \
-    apk add --no-cache unzip wget nginx certbot openssl && \
-    wget ${URL} && \
-    unzip Xray-linux-64.zip -d /opt/xray && \
-    rm Xray-linux-64.zip && \
-    addgroup www && \
+    unzip /opt/Xray-linux-64.zip -d /opt/xray && \
+    rm /opt/Xray-linux-64.zip && \
+    chmod +x /opt/run.sh /opt/crypt.sh
+
+# crond
+RUN set -xe && mv /opt/crontab /var/spool/cron/crontabs/root
+
+# nginx
+RUN set -xe && addgroup www && \
     adduser -H -D -S -s /bin/false www -G www && \
-    chown -R www:www /opt/nginx && \
-    chmod +x /opt/run.sh /opt/crypt.sh && \
-    apk del unzip wget
+    chown -R www:www /opt/nginx
+
+# remove packages
+RUN set -xe && apk del unzip wget
 
 EXPOSE 80 443
 

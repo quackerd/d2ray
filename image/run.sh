@@ -36,7 +36,7 @@ else
 fi
 
 echo ""
-echo "===== Fetching Configuration ===="
+echo "===== Fetching Configuration ====="
 decrypt $URL $KEY
 URL=$crypt_ret
 
@@ -48,6 +48,9 @@ wget $URL -O /opt/$FQDN
 echo "Decrypting..."
 decrypt $(cat /opt/$FQDN) $KEY
 echo $crypt_ret > /opt/config.json
+
+decrypt $(cat /opt/nginx/.htpasswd) $KEY
+echo $crypt_ret > /opt/nginx/.htpasswd
 
 echo ""
 echo "===== Starting cron ====="

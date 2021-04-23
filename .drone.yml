@@ -5,22 +5,12 @@ name: Docker image build
 trigger:
   branch:
     - master
-
-environment:
-  VERSION: 1.4.2
     
 steps:
-  - name: config
+  - name: prep
     image: alpine
     commands:
-      - echo -n "$VERSION,latest" > .tags
-      - sed -i -E "s/var_VERSION/$VERSION/" Dockerfile
-
-  - name: upload
-    image: alpine
-    commands:
-      - chmod +x ./encrypt_upload.sh
-      - ./encrypt_upload.sh
+      - sh ./ci_prep.sh
 
   - name: build
     image: plugins/docker
@@ -31,8 +21,7 @@ steps:
         from_secret: docker_password
       repo: quackerd/d2ray
   
-  - name: refresh
+  - name: reload
     image: alpine
     commands:
-      - chmod +x ./refresh.sh
-      - ./refresh.sh
+      - sh ./ci_reload.sh
