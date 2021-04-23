@@ -1,5 +1,5 @@
 #!/bin/sh
-set -xe
+set -e
 
 apk add openssh
 
