@@ -1,3 +1,3 @@
-#!/bin/sh
+@echo off
 
-./xray -c config.json
+.\xray -c config.json
