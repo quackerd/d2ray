@@ -23,7 +23,7 @@ for filename in confs/*; do
                                                                          -v d2ray_volume:/opt/config \
                                                                          --name d2ray \
                                                                          quackerd/d2ray:latest"
-    ssh -p 77 -o StrictHostKeychecking=no -i ansible/id_root root@$addr -t "docker system prune -af"
+    ssh -p 77 -o StrictHostKeychecking=no -i ./id_root root@$addr -t "docker system prune -af"
 done
 
 wait

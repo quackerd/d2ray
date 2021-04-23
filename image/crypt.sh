@@ -4,7 +4,7 @@ decrypt()
 {
     input=$1
     key=$2
-    crypt_ret=$(echo $input | openssl enc -d -salt -aes-256-cbc -a -A -md sha512 -pbkdf2 -pass pass:$key)
+    crypt_ret=$(echo $input | openssl enc -d -salt -aes-256-cbc -a -md sha512 -pbkdf2 -pass pass:$key)
 }
 
 encrypt()
