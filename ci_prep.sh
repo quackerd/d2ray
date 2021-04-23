@@ -2,7 +2,7 @@
 
 set -e
 
-apk add openssh openssl wget unzip zip
+apk add openssh openssl wget unzip zip apache2-utils
 
 source image/crypt.sh
 
