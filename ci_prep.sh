@@ -26,7 +26,7 @@ done
 
 # build zip
 URL_SO=https://github.com/FelisCatus/SwitchyOmega/releases/download/v$VER_SO/SwitchyOmega_Chromium.crx
-URL_NG=https://github.com/2dust/v2rayNG/releases/download/$VER_NG/v2rayNG_1.5.16_arm64-v8a.apk
+URL_NG=https://github.com/2dust/v2rayNG/releases/download/$VER_NG/v2rayNG_"$VER_NG"_arm64-v8a.apk
 URL_XRAY_WIN=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-windows-64.zip
 URL_XRAY_MAC=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-macos-64.zip
 URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
