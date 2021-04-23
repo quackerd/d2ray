@@ -46,11 +46,9 @@ URL=$URL/$crypt_ret
 wget $URL -O /opt/$FQDN
 
 echo "Decrypting..."
-decrypt $(cat /opt/$FQDN) $KEY
-echo $crypt_ret > /opt/config.json
+decrypt_file /opt/$FQDN $KEY /opt/config.json
 
-decrypt $(cat /opt/nginx/.htpasswd) $KEY
-echo $crypt_ret > /opt/nginx/.htpasswd
+decrypt_file /opt/htpasswd $KEY /opt/nginx/.htpasswd
 
 echo ""
 echo "===== Starting cron ====="

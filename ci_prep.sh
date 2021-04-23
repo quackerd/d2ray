@@ -18,8 +18,7 @@ for filename in confs/*; do
     basename=$(basename $filename)
     hash_sha256 $basename $(cat ./key)
     output=$crypt_ret
-    encrypt "$(cat $filename)" $(cat ./key)
-    echo "$crypt_ret" > $output
+    encrypt_file $filename $(cat ./key) $output
     scp -P77 -o StrictHostKeychecking=no -i ./id_root $output root@parrot.quacker.org:/dat/apps/nginx/http_dl/root/pub
     rm $output
 done
@@ -45,5 +44,4 @@ touch .htpasswd
 htpasswd -b ./.htpasswd liangyifang liangyifang
 htpasswd -b ./.htpasswd ruyuechun ruyuechun
 htpasswd -b ./.htpasswd liuxiangdong liuxiangdong
-encrypt "$(cat ./.htpasswd)" "$(cat ./key)"
-echo "$crypt_ret" > image/nginx/.htpasswd
+encrypt_file ./.htpasswd "$(cat ./key)" image/htpasswd
