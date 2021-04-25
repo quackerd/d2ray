@@ -25,21 +25,26 @@ done
 
 # build zip
 URL_SO=https://github.com/FelisCatus/SwitchyOmega/releases/download/v$VER_SO/SwitchyOmega_Chromium.crx
-URL_NG=https://github.com/2dust/v2rayNG/releases/download/$VER_NG/v2rayNG_"$VER_NG"_arm64-v8a.apk
-URL_XRAY_WIN=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-windows-64.zip
-URL_XRAY_MAC=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-macos-64.zip
-URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
-
 wget $URL_SO -O SwitchyOmega_Chromium.zip
-mkdir zip/chrome/SwitchyOmega
-unzip ./SwitchyOmega_Chromium.zip -d zip/chrome/SwitchyOmega || true
+mkdir zip/chrome
+unzip ./SwitchyOmega_Chromium.zip -d zip/chrome || true
+
+URL_NG=https://github.com/2dust/v2rayNG/releases/download/$VER_NG/v2rayNG_"$VER_NG"_arm64-v8a.apk
 wget $URL_NG -P image/nginx/download/android/
-wget $URL_XRAY_WIN -P zip/windows/
-wget $URL_XRAY_MAC -P zip/macos/
+
+URL_XRAY_WIN=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-windows-64.zip
+wget $URL_XRAY_WIN
+unzip Xray-windows-64.zip -d zip/windows
+
+URL_XRAY_MAC=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-macos-64.zip
+wget $URL_XRAY_MAC
+unzip Xray-macos-64.zip -d zip/macos
+
+URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
 wget $URL_XRAY_LINUX -P image/
 
-zip -r pc.zip zip/
-mv pc.zip image/nginx/download/
+zip -r windows_macos.zip zip/*
+mv windows_macos.zip image/nginx/download/
 
 # build htpassword
 touch .htpasswd
