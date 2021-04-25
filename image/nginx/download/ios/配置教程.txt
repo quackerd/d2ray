@@ -3,7 +3,7 @@
 3. 右上角+号
 
 类型：VLESS
-地址：服务器地址
+地址：服务器地址 （就是当前网站的地址，比如你在https://xxx.quacker.net/download你的服务器地址就是xxx.quacker.net）
 端口：443
 UUID：转为UUID的你的密码：转换见以下
   - 访问 https://www.uuidtools.com/v5

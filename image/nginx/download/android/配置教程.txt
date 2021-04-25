@@ -3,7 +3,7 @@
 3. 右上角箭头->新加配置文件->手动输入[VLess]
 
 别名：随便起
-地址：服务器地址
+地址：服务器地址（就是当前网站的地址，比如你在https://xxx.quacker.net/download你的服务器地址就是xxx.quacker.net）
 端口：443
 用户id：你的密码 (和你的网站的访问密码相同)
 流控（flow）：xtls-rprx-direct
