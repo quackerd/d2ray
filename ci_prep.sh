@@ -43,7 +43,9 @@ unzip Xray-macos-64.zip -d zip/macos
 URL_XRAY_LINUX=https://github.com/XTLS/Xray-core/releases/download/v$VER_XRAY/Xray-linux-64.zip
 wget $URL_XRAY_LINUX -P image/
 
-zip -r windows_macos.zip zip/*
+cd zip
+zip -r -D ../windows_macos.zip .
+cd ..
 mv windows_macos.zip image/nginx/download/
 
 # build htpassword
