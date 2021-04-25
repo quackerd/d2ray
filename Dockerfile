@@ -2,7 +2,7 @@ FROM alpine:latest
 
 COPY image/ /opt/
 
-RUN set -xe &&
+RUN set -xe && \
     apk add --no-cache unzip wget nginx certbot openssl && \
     mkdir -p /opt/xray && \
     ln -s /opt/config/certs /etc/letsencrypt && \
@@ -13,7 +13,7 @@ RUN set -xe &&
     addgroup www && \
     adduser -H -D -S -s /bin/false www -G www && \
     chown -R www:www /opt/nginx && \
-    set -xe && apk del unzip wget
+    apk del unzip wget
 
 EXPOSE 80 443
 
