@@ -20,7 +20,7 @@
           },
           {
             "id": "7-1803",
-            "flow": "xtls-rprx-splice"
+            "flow": "xtls-rprx-direct"
           }
         ],
         "decryption": "none",
