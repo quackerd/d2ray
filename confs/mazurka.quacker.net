@@ -17,6 +17,10 @@
           {
             "id": "lxd",
             "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "7-1803",
+            "flow": "xtls-rprx-splice"
           }
         ],
         "decryption": "none",
