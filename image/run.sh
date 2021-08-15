@@ -6,7 +6,6 @@ source /opt/crypt.sh
 
 mkdir -p /opt/config
 mkdir -p /opt/config/logs
-mkdir -p /opt/config/certs
 mkdir -p /opt/config/logs/nginx
 mkdir -p /opt/config/logs/xray
 mkdir -p /opt/config/logs/crond

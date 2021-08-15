@@ -7,13 +7,12 @@ RUN set -xe && apk add --no-cache unzip wget nginx certbot openssl
 
 # setup core files
 RUN set -xe && mkdir -p /opt/xray && \
-    ln -s /opt/config/certs /etc/letsencrypt && \
     unzip /opt/Xray-linux-64.zip -d /opt/xray && \
     rm /opt/Xray-linux-64.zip && \
     chmod +x /opt/run.sh /opt/crypt.sh
 
 # crond
-RUN set -xe && mv /opt/crontab /var/spool/cron/crontabs/root
+# RUN set -xe && mv /opt/crontab /var/spool/cron/crontabs/root
 
 # nginx
 RUN set -xe && addgroup www && \
