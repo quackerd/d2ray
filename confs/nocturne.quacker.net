@@ -29,6 +29,10 @@
           {
             "id": "zhoubowen",
             "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "gaoyuchen",
+            "flow": "xtls-rprx-direct"
           }
         ],
         "decryption": "none",
