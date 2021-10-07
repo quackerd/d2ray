@@ -11,11 +11,7 @@
       "settings": {
         "clients": [
           {
-            "id": "zsy",
-            "flow": "xtls-rprx-direct"
-          },
-          {
-            "id": "lxd",
+            "id": "quackerd",
             "flow": "xtls-rprx-direct"
           },
           {
