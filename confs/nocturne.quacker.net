@@ -33,7 +33,11 @@
           {
             "id": "gaoyuchen",
             "flow": "xtls-rprx-direct"
-          }
+          },
+	  {
+	    "id": "yushengde",
+	    "flow": "xtls-rprx-direct"
+	  }
         ],
         "decryption": "none",
         "fallbacks": [
