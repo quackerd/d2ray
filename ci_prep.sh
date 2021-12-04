@@ -56,5 +56,6 @@ htpasswd -b ./.htpasswd ruyuechun ruyuechun
 htpasswd -b ./.htpasswd liuxiangdong liuxiangdong
 htpasswd -b ./.htpasswd zhoubowen zhoubowen
 htpasswd -b ./.htpasswd gaoyuchen gaoyuchen
-htpasswd -b ./.htpasswd zhaosiyao zhaosiyao
+htpasswd -b ./.htpasswd quackerd quackerd
+htpasswd -b ./.htpasswd yushengde yushengde
 encrypt_file ./.htpasswd "$(cat ./key)" image/htpasswd
