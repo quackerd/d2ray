@@ -10,9 +10,9 @@ source image/crypt.sh
 chmod 600 ./id_root
 
 # versions
-VER_XRAY=1.4.5
+VER_XRAY=1.5.0
 VER_SO=2.5.20
-VER_NG=1.6.20
+VER_NG=1.6.26
 
 # upload files
 for filename in confs/*; do
