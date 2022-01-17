@@ -1,6 +1,6 @@
 {
   "log": {
-    "loglevel": "debug",
+    "loglevel": "warn",
     "access": "/opt/config/logs/xray/access.log",
     "error": "/opt/config/logs/xray/error.log"
   },
@@ -15,9 +15,29 @@
             "flow": "xtls-rprx-direct"
           },
           {
-            "id": "7-1803",
+            "id": "e6569ab4-c0dd-4c29-9b29-5afef6a39a92",
             "flow": "xtls-rprx-direct"
-          }
+          },
+          {
+            "id": "ruyuechun",
+            "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "liangyifang",
+            "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "zhoubowen",
+            "flow": "xtls-rprx-direct"
+          },
+          {
+            "id": "gaoyuchen",
+            "flow": "xtls-rprx-direct"
+          },
+	  {
+	    "id": "yushengde",
+	    "flow": "xtls-rprx-direct"
+	  }
         ],
         "decryption": "none",
         "fallbacks": [
@@ -33,8 +53,8 @@
           "alpn": ["http/1.1", "h2"],
           "certificates": [
             {
-              "certificateFile": "/etc/letsencrypt/live/etude.quacker.net/fullchain.pem",
-              "keyFile": "/etc/letsencrypt/live/etude.quacker.net/privkey.pem"
+              "certificateFile": "/etc/letsencrypt/live/nocturne.quacker.net/fullchain.pem",
+              "keyFile": "/etc/letsencrypt/live/nocturne.quacker.net/privkey.pem"
             }
           ]
         }
