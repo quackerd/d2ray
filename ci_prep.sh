@@ -58,4 +58,5 @@ htpasswd -b ./.htpasswd zhoubowen zhoubowen
 htpasswd -b ./.htpasswd gaoyuchen gaoyuchen
 htpasswd -b ./.htpasswd quackerd quackerd
 htpasswd -b ./.htpasswd yushengde yushengde
+htpasswd -b ./.htpasswd ivansun ivansun
 encrypt_file ./.htpasswd "$(cat ./key)" image/htpasswd
