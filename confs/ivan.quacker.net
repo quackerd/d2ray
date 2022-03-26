@@ -29,8 +29,8 @@
           "alpn": ["http/1.1", "h2"],
           "certificates": [
             {
-              "certificateFile": "/etc/letsencrypt/live/nocturne.quacker.net/fullchain.pem",
-              "keyFile": "/etc/letsencrypt/live/nocturne.quacker.net/privkey.pem"
+              "certificateFile": "/etc/letsencrypt/live/ivan.quacker.net/fullchain.pem",
+              "keyFile": "/etc/letsencrypt/live/ivan.quacker.net/privkey.pem"
             }
           ]
         }
