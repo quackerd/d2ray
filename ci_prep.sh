@@ -12,7 +12,7 @@ chmod 600 ./id_root
 # versions
 VER_XRAY=1.5.5
 VER_SO=2.5.20
-VER_NG=1.7.30
+VER_NG=1.7.3
 
 # upload files
 for filename in confs/*; do
