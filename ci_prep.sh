@@ -10,7 +10,7 @@ source image/crypt.sh
 chmod 600 ./id_root
 
 # versions
-VER_XRAY=1.5.3
+VER_XRAY=1.5.5
 VER_SO=2.5.20
 VER_NG=1.6.30
 
