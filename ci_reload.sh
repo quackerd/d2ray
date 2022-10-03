@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-#apk add openssh
+apk add openssh
 
 key=$(cat ./key)
 
