@@ -22,7 +22,7 @@ do
                                                                             -e KEY=$key \
                                                                             -e FQDN=$addr \
                                                                             -p 80:80 \
-                                                                            -p 443:8443 \
+                                                                            -p 8443:443 \
                                                                             -v d2ray_volume:/opt/config \
                                                                             --name d2ray \
                                                                             quackerd/d2ray:latest"
