@@ -5,12 +5,7 @@
 类型：VLESS
 地址：服务器地址 （就是当前网站的地址，比如你在https://xxx.quacker.net/download你的服务器地址就是xxx.quacker.net）
 端口：443
-UUID：转为UUID的你的密码：转换见以下
-  - 访问 https://www.uuidtools.com/v5
-  - 在"Namespace" 下面填 "00000000-0000-0000-0000-000000000000"
-  - 在"Name" 下面填你的明文密码（和你网站访问密码一样）
-  - 然后点"Generate UUID"
-  - 生成结果, 比如 "52e0dc6b-90cb-597b-aea5-8aecfa775e07" 就是你需要填的
+UUID：你的用户名
 TLS： 开启
 XTLS Direct: 开启
 快速打开： 开启
