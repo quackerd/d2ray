@@ -1,0 +1,43 @@
+{
+    "log": {
+      "loglevel": "warn",
+      "access": "/etc/d2ray/logs/xray/access.log",
+      "error": "/etc/d2ray/logs/xray/error.log"
+    },
+    "inbounds": [
+      {
+        "port": {{ PORT }},
+        "protocol": "vless",
+        "settings": {
+          "clients": [
+            {{ USERS }}
+          ],
+          "decryption": "none",
+          "fallbacks": [
+            {
+              "dest": "localhost:80"
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "security": "xtls",
+          "xtlsSettings": {
+            "alpn": ["http/1.1", "h2"],
+            "certificates": [
+              {
+                "certificateFile": "/etc/letsencrypt/live/{{ FQDN }}/fullchain.pem",
+                "keyFile": "/etc/letsencrypt/live/{{ FQDN }}/privkey.pem"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {}
+      }
+    ]
+  }

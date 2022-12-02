@@ -7,11 +7,6 @@ trigger:
     - master
     
 steps:
-  - name: prep
-    image: alpine
-    commands:
-      - sh ./ci_prep.sh
-
   - name: build
     image: plugins/docker
     settings:
@@ -20,8 +15,3 @@ steps:
       password:
         from_secret: docker_password
       repo: quackerd/d2ray
-  
-  - name: reload
-    image: alpine
-    commands:
-      - sh ./ci_reload.sh

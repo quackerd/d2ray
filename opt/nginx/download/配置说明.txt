@@ -1,0 +1,3 @@
+Android用户请看 android 文件夹
+iOS用户请看 ios 文件夹
+其他系统用户请下载 d2ray.zip

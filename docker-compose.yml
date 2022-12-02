@@ -1,0 +1,24 @@
+networks:
+  d2ray_br:
+    external: false
+
+volumes:
+  d2ray_certs:
+
+services:
+  d2ray:
+    image: quackerd/d2ray
+    container_name: d2ray
+    ports:
+      - ${PORT}:${PORT}
+      - 80:80
+    environment:
+      - PORT=${PORT}
+      - FQDN=${FQDN}
+      - USERS=${USERS}
+    restart: "no"
+    networks:
+      - d2ray_br
+    volumes:
+      - d2ray_certs:/etc/letsencrypt
+      - ${LOGDIR}:/etc/d2ray

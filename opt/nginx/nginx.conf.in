@@ -1,7 +1,8 @@
 user       www www;
 worker_processes  auto;
-error_log  /opt/config/logs/nginx/error.log;
+daemon off;
 pid /tmp/nginx.pid;
+worker_rlimit_nofile 8192;
 
 events {
   worker_connections  4096;  ## Default: 1024
@@ -22,13 +23,16 @@ http {
 	}
 	
     charset utf-8;
+	access_log /etc/d2ray/logs/nginx/access.log;
+	error_log  /etc/d2ray/logs/nginx/error.log;
+	include /etc/nginx/mime.types;
 
 	server {
 		listen 80 default_server;
 		server_name _;
-		access_log /opt/config/logs/nginx/access.log;
+
 		if ($external) {
-			return 301 https://$host$request_uri:8443;
+			return 301 https://$host:{{ PORT }}$request_uri;
 		}
 
 		location / {
@@ -39,7 +43,7 @@ http {
 		location /download {
 			root /opt/nginx/;
 			autoindex on;
-			auth_basic "Provide credentials to access downloads";
+			auth_basic "Please provide credentials to access this server";
 			auth_basic_user_file "/opt/nginx/.htpasswd";
 		}
 	}

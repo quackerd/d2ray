@@ -11,21 +11,25 @@ VPN陪置教程
 
 **** 1. 配置 VPN程序 ****
 Windows系统请看这里：
-- 进入windows目录
-- 用文本编辑器打开config.json，搜索并替换 *所有* （划重点*所有*）：
+- 进入当前文件夹 windows 目录
+- 解压 Xray-windows-64.zip
+- 用文本编辑器打开 config.json，搜索并替换 *所有* （划重点*所有*）：
    %PASSWORD% => 你的密码. 比如密码是12345的话 文件中所有的 "%PASSWORD%" 应该替换成 "12345"， 以下同理
    %SERVER% => 你的服务器地址（这个是你下载zip文件的地址，比如你从https://xxx.quacker.net/download下载你的服务器地址就是xxx.quacker.net）
-- 保存config.json
-- 双击run.bat运行VPN程序
+- 保存 config.json
+- 拷贝 config.json 和 run.bat 进入解压后的文件夹
+- 进入解压后文件夹双击 run.bat 运行VPN程序
 
 MacOS系统请看这里：
-- 进入macos目录
-- 用文本编辑器打开config.json，搜索并替换 *所有* （划重点*所有*）：
+- 进入当前文件夹 macos 目录
+- 解压 Xray-macos-64.zip 或者 Xray-macos-arm64-v8a.zip (Apple M系芯片请用arm64)
+- 用文本编辑器打开 config.json，搜索并替换 *所有* （划重点*所有*）：
    %PASSWORD% => 你的密码(和你的网站下载密码相同). 比如密码是12345的话 文件中所有的 "%PASSWORD%" 应该替换成 "12345"， 以下同理
    %SERVER% => 你的服务器地址（这个是你下载zip文件的地址，比如你从https://xxx.quacker.net/download下载你的服务器地址就是xxx.quacker.net）
-- 保存config.json
-- 右键run.sh => 用应用程序打开(Open With) => 其他(Other) => 在新打开的窗口下方选择框里选"所有应用程序"(All Applications) => 找到 终端"Terminal" 并勾选 永久以程序打开(Always Open With) => 确定
-- 上述设置后直接双击run.sh就可以打开VPN程序了
+- 保存 config.json
+- 右键 run.sh => 用应用程序打开(Open With) => 其他(Other) => 在新打开的窗口下方选择框里选"所有应用程序"(All Applications) => 找到 终端"Terminal" 并勾选 永久以程序打开(Always Open With) => 确定
+- 拷贝 config.json 和 run.sh 进入解压后的文件夹
+- 进入解压后文件夹双击 run.sh 运行VPN程序
 
 
 **** 2. 配置 浏览器 ****
