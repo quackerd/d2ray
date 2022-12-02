@@ -16,7 +16,7 @@ services:
       - PORT=${PORT}
       - FQDN=${FQDN}
       - USERS=${USERS}
-    restart: "no"
+    restart: unless-stopped
     networks:
       - d2ray_br
     volumes:
