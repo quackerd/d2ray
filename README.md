@@ -26,4 +26,4 @@ d2ray is a single Docker container that provides easy and braindead configuratio
 
 ## Notes
 1. Port 80 must be available on the host as it is required to obtain SSL certificates.
-2. Only tested with the newer docker-compose-plugin (install with your distribution's package manager) as opposed to legacy docker-compose.
+2. Note the `docker compose` instead of `docker-compose` commands. d2ray is only tested with the newer docker-compose-plugin (install with your distribution's package manager) as opposed to legacy docker-compose.
