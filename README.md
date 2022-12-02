@@ -4,8 +4,8 @@
 d2ray is a single Docker container that provides easy and braindead configuration for Xray + XTLS + Nginx fallback. d2ray also offers currently hardcoded setup instructions and Xray binary packages for various OSes and architectures.
 
 ## Features
-- Easy 5-minutes setup
-- Automatic generation and renewal of Let's Encrypt SSL certificates
+- Easy 5-minutes setup.
+- Automatic generation and renewal of Let's Encrypt SSL certificates.
 - Packaged Xray binary on the fallback website.
 
 ## How to use?
