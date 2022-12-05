@@ -10,7 +10,7 @@
         "protocol": "vless",
         "settings": {
           "clients": [
-            {{ USERS }}
+            {{ XRAY_USERS }}
           ],
           "decryption": "none",
           "fallbacks": [

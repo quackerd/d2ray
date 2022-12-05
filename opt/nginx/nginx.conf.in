@@ -40,11 +40,6 @@ http {
 			index index.html;
 		}
 
-		location /download {
-			root /opt/nginx/;
-			autoindex on;
-			auth_basic "Please provide credentials to access this server";
-			auth_basic_user_file "/opt/nginx/.htpasswd";
-		}
+		{{ NGINX_LOCATIONS }}
 	}
 }

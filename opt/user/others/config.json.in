@@ -82,13 +82,13 @@
       "settings": {
         "vnext": [
           {
-            "address": "%SERVER%",
-            "port": 443,
+            "address": "{{ FQDN }}",
+            "port": {{ PORT }},
             "users": [
               {
-                "id": "%PASSWORD%",
+                "id": "{{ USER }}",
                 "encryption": "none",
-                "flow": "xtls-rprx-direct",
+                "flow": "{{ FLOW }}",
                 "level": 0
               }
             ]
@@ -99,7 +99,7 @@
         "network": "tcp",
         "security": "xtls",
         "xtlsSettings": {
-            "serverName": "%SERVER%",
+            "serverName": "{{ FQDN }}",
             "allowInsecure": false,
             "alpn": ["h2","http/1.1"]
         }
