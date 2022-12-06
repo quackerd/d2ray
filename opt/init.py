@@ -116,7 +116,7 @@ for u in users:
     jinja_dict["USER"] = u[0]
     jinja_dict["FLOW"] = u[1]
     process_directory(user_dir, jinja_dict)
-    subprocess.check_call(f"ln -s /downloads/others {user_dir}/others/downloads", shell=True)
-    subprocess.check_call(f"ln -s /downloads/android {user_dir}/android/downloads", shell=True)
+    subprocess.check_call(f"ln -sf /downloads/others {user_dir}/others/downloads", shell=True)
+    subprocess.check_call(f"ln -sf /downloads/android {user_dir}/android/downloads", shell=True)
 
 exit(0)

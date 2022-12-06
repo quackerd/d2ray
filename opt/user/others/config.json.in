@@ -70,8 +70,7 @@
         "destOverride": ["http", "tls"]
       },
       "settings": {
-        "auth": "noauth",
-        "udp": false
+        "udp": true
       }
     }
   ],
@@ -97,11 +96,11 @@
       },
       "streamSettings": {
         "network": "tcp",
-        "security": "xtls",
-        "xtlsSettings": {
+        "security": "tls",
+        "tlsSettings": {
             "serverName": "{{ FQDN }}",
             "allowInsecure": false,
-            "alpn": ["h2","http/1.1"]
+            "fingerprint": "firefox"
         }
       }
     },
