@@ -70,7 +70,8 @@
         "destOverride": ["http", "tls"]
       },
       "settings": {
-        "udp": true
+        "auth": "noauth",
+        "udp": false
       }
     }
   ],
@@ -99,7 +100,8 @@
         "security": "xtls",
         "xtlsSettings": {
             "serverName": "{{ FQDN }}",
-            "allowInsecure": false
+            "allowInsecure": false,
+            "alpn": ["h2","http/1.1"]
         }
       }
     },
