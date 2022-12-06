@@ -96,11 +96,10 @@
       },
       "streamSettings": {
         "network": "tcp",
-        "security": "tls",
-        "tlsSettings": {
+        "security": "xtls",
+        "xtlsSettings": {
             "serverName": "{{ FQDN }}",
-            "allowInsecure": false,
-            "fingerprint": "firefox"
+            "allowInsecure": false
         }
       }
     },
