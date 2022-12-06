@@ -23,6 +23,7 @@
           "network": "tcp",
           "security": "xtls",
           "xtlsSettings": {
+            "alpn": ["http/1.1", "h2"],
             "certificates": [
               {
                 "certificateFile": "/etc/letsencrypt/live/{{ FQDN }}/fullchain.pem",
