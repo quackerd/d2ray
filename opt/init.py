@@ -32,7 +32,7 @@ def parse_user_flow(s : str) -> list[tuple[str,str]]:
         if (len(ele) > 1):
             flow = ele[1]
         else:
-            flow = "xtls-rprx-direct"
+            flow = "xtls-rprx-vision"
         users.append((username, flow))
     return users
 
