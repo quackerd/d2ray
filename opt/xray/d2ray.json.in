@@ -21,8 +21,8 @@
         },
         "streamSettings": {
           "network": "tcp",
-          "security": "xtls",
-          "xtlsSettings": {
+          "security": "tls",
+          "tlsSettings": {
             "certificates": [
               {
                 "certificateFile": "/etc/letsencrypt/live/{{ FQDN }}/fullchain.pem",
@@ -30,6 +30,13 @@
               }
             ]
           }
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": [
+              "http",
+              "tls"
+          ]
         }
       }
     ],

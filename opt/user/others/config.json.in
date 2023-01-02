@@ -87,8 +87,7 @@
               {
                 "id": "{{ USER }}",
                 "encryption": "none",
-                "flow": "{{ FLOW }}",
-                "level": 0
+                "flow": "{{ FLOW }}"
               }
             ]
           }
@@ -96,10 +95,11 @@
       },
       "streamSettings": {
         "network": "tcp",
-        "security": "xtls",
-        "xtlsSettings": {
+        "security": "tls",
+        "tlsSettings": {
             "serverName": "{{ FQDN }}",
-            "allowInsecure": false
+            "allowInsecure": false,
+            "fingerprint": "safari"
         }
       }
     },

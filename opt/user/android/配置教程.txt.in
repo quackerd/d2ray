@@ -2,15 +2,17 @@
 2. 打开V2rayNG app
 3. 右上角箭头->新加配置文件->手动输入[VLess]
 
-别名：随便起
-地址：{{ FQDN }}
-端口：{{ PORT }}
-用户id：{{ USER }}
-流控（flow）：{{ FLOW }}
-传输协议：tcp
-伪装类型：none
-底层传输安全：xtls
-跳过证书验证：false
+别名(remarks)：随便起
+地址(address)：{{ FQDN }}
+端口(port)：{{ PORT }}
+用户ID(id)：{{ USER }}
+流控(flow)：{{ FLOW }}
+传输协议(network)：tcp
+伪装类型(type)：none
+传输层安全(tls)：tls
+uTLS: firefox
+alpn: h2,http/1.1
+跳过证书验证(allowInsecure)：false
 
 
 以上没有提到的选项统统默认值
