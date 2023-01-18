@@ -1,8 +1,8 @@
 FROM alpine:latest
 
-ENV VER_XRAY 1.7.0
+ENV VER_XRAY 1.7.2
 ENV VER_SO 2.5.20
-ENV VER_NG 1.7.31
+ENV VER_NG 1.7.34
 
 # install packages
 RUN set -xe && apk add --no-cache unzip wget nginx certbot openssl python3 py3-jinja2 supervisor apache2-utils bash
