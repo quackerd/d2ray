@@ -1,7 +1,7 @@
 [![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
-# Xray + VLESS + XTLS + Nginx fallback in Docker!
+# Xray + xtls-vision + nginx fallback all in Docker!
 ## What is d2ray?
-d2ray is a single Docker container that provides easy and braindead configuration for xtls-vision + Nginx fallback. d2ray also offers currently hardcoded setup instructions and Xray binary packages for various OSes and architectures.
+d2ray is a single Docker container that provides easy and braindead configuration for xtls-vision + nginx fallback. d2ray also offers currently hardcoded setup instructions and Xray binary packages for various OSes and architectures.
 
 ## Features
 - Easy 5-minutes setup.
