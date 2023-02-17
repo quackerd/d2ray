@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ENV VER_XRAY 1.7.2
+ENV VER_XRAY 1.7.5
 ENV VER_SO 2.5.20
 ENV VER_NG 1.7.34
 
