@@ -100,7 +100,7 @@
         "tlsSettings": {
             "serverName": "{{ FQDN }}",
             "allowInsecure": false,
-            "fingerprint": "safari",
+            "fingerprint": "random",
             "alpn": ["h2","http/1.1"]
         }
       }
