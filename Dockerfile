@@ -21,4 +21,6 @@ COPY ./opt /opt/
 
 # remove packages
 RUN set -xe && apk del unzip wget
+
+VOLUME /etc/d2ray
 CMD ["sh", "/opt/init.sh"]
