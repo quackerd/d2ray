@@ -7,8 +7,9 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
 1. You can start with the example `docker-compose.yml` from this repo.
 2. Adjust environment variables:
     - `PORT`: the port Xray listens on.
-    - `TARGET_URL`: the target domain to redirect non proxy connections.
+    - `TARGET_HOST`: the target host to redirect non proxy connections.
     - `TARGET_PORT`: the target port to redirect non proxy connections.
+    - `TARGET_SNI`: comma separated list of the target website's SNIs.
     - `USERS`: comma separated list of usernames that can access Xray.
     - `LOG_LEVEL`: the verbosity of Xray logs. Default: `warn`.
 3. `docker compose up -d`

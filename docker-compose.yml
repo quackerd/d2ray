@@ -10,10 +10,11 @@ services:
       - 8443:8443
     environment:
       - PORT=8443
-      - TARGET_URL=example.com
+      - TARGET_HOST=example.com
       - TARGET_PORT=443
+      - TARGET_SNI=www.example.com,example.com
       - USERS=exampleuser1,exampleuser2
-      - LOG_LEVEL=${LOG_LEVEL}
+      - LOG_LEVEL=warn
     restart: unless-stopped
     networks:
       - d2ray_br

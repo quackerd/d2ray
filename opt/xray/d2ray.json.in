@@ -19,10 +19,10 @@
           "security": "reality",
           "realitySettings": {
             "show": false,
-            "dest": "{{ TARGET_URL }}:{{ TARGET_PORT }}",
+            "dest": "{{ TARGET_HOST }}:{{ TARGET_PORT }}",
             "xver": 0,
             "serverNames": [
-              {{ TARGET_FQDNS }}
+              {{ TARGET_SNI }}
             ],
             "privateKey": "{{ PRIVATE_KEY }}",
             "shortIds": [

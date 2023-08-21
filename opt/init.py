@@ -13,13 +13,15 @@ XRAY_BIN = pathlib.Path("/opt/xray/xray")
 class d2args:
     port : int
     target_port : int
-    target_url : str
+    target_host : str
+    target_sni : str
     log_level : str
     users : list[str]
     def __init__(self) -> None:
         self.port = 443
+        self.target_host = "localhost"
         self.target_port = 443
-        self.target_url = "localhost"
+        self.target_sni = "localhost"
         self.log_level = "warn"
         self.users = [''.join(random.choices(string.ascii_uppercase + string.digits, k=24))]
 
@@ -32,9 +34,13 @@ class d2args:
         if env != None:
             self.target_port = int(env)  
 
-        env = os.getenv("TARGET_URL")
+        env = os.getenv("TARGET_SNI")
         if env != None:
-            self.target_url = env
+            self.target_sni = env.split(",")
+        
+        env = os.getenv("TARGET_HOST")
+        if env != None:
+            self.target_host = env
 
         env = os.getenv("LOG_LEVEL")
         if env != None:
@@ -47,7 +53,8 @@ class d2args:
     def __str__(self):
         ret = (f"Port: {self.port}\n"
                f"Target Port: {self.target_port}\n"
-               f"Target URL: {self.target_url}\n"
+               f"Target Host: {self.target_host}\n"
+               f"Target SNI: {', '.join(self.target_sni)}\n"
                f"Log Level: {self.log_level}\n"
                f"Users: {', '.join(self.users)}"
         )
@@ -68,12 +75,8 @@ def process_directory(path : str, vars : dict[str, str], delete_template : bool 
             if delete_template:
                 subprocess.check_call(f"rm {full_path}", shell=True)
 
-def build_target_fqdns(url : str) -> str:
-    prefix = "www."
-    fqdns = [url, f"{prefix}{url}"]
-    if url.startswith(prefix) and len(url) > len(prefix):
-        fqdns.append(url[len(prefix):])
-    return ', '.join(['"' + item + '"' for item in fqdns])
+def build_target_snis(snis : list[str]) -> str:
+    return ', '.join(['"' + item + '"' for item in snis])
 
 def build_users_json(users: list[str]) -> str:
     return ', '.join(["{\"id\": \"" + item + "\", \"flow\": \"xtls-rprx-vision\"}" for item in users])
@@ -81,10 +84,10 @@ def build_users_json(users: list[str]) -> str:
 def build_jinja_dict(args : d2args, skey : str) -> dict[str, str]:
     jinja_dict : dict[str,str] = dict()
     jinja_dict["PORT"] = str(args.port)
-
-    jinja_dict["TARGET_URL"] = args.target_url
+    
+    jinja_dict["TARGET_HOST"] = args.target_host
     jinja_dict["TARGET_PORT"] = str(args.target_port)
-    jinja_dict["TARGET_FQDNS"] = build_target_fqdns(args.target_url)
+    jinja_dict["TARGET_SNI"] = build_target_snis(args.target_sni)
 
     jinja_dict["LOG_DIR"] = str(LOG_DIR)
     jinja_dict["LOG_LEVEL"] = args.log_level
