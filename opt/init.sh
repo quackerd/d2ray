@@ -1,13 +1,13 @@
 #!/bin/sh
-# create log directories
-mkdir -p /etc/d2ray/logs/cron
+# create directories
 mkdir -p /etc/d2ray/logs/xray
-mkdir -p /etc/d2ray/logs/nginx
-mkdir -p /etc/d2ray/logs/supervisor
+mkdir -p /etc/d2ray/logs/supervisord
+mkdir -p /etc/d2ray/certs
 
-python3 /opt/init.py -p $PORT -u $USERS -f $FQDN
+python3 /opt/init.py
 retval=$?
 if [ $retval -ne 0 ]; then
     exit $retval
 fi
+
 exec /usr/bin/supervisord -c /opt/supervisord.conf

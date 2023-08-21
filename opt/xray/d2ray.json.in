@@ -1,8 +1,8 @@
 {
     "log": {
-      "loglevel": "warn",
-      "access": "/etc/d2ray/logs/xray/access.log",
-      "error": "/etc/d2ray/logs/xray/error.log"
+      "loglevel": "{{LOG_LEVEL}}",
+      "access": "{{LOG_DIR}}/access.log",
+      "error": "{{LOG_DIR}}/error.log"
     },
     "inbounds": [
       {
@@ -10,25 +10,23 @@
         "protocol": "vless",
         "settings": {
           "clients": [
-            {{ XRAY_USERS }}
+            {{ USERS }}
           ],
-          "decryption": "none",
-          "fallbacks": [
-            {
-              "dest": "localhost:80"
-            }
-          ]
+          "decryption": "none"
         },
         "streamSettings": {
           "network": "tcp",
-          "security": "tls",
-          "tlsSettings": {
-            "alpn": ["http/1.1", "h2"],
-            "certificates": [
-              {
-                "certificateFile": "/etc/letsencrypt/live/{{ FQDN }}/fullchain.pem",
-                "keyFile": "/etc/letsencrypt/live/{{ FQDN }}/privkey.pem"
-              }
+          "security": "reality",
+          "realitySettings": {
+            "show": false,
+            "dest": "{{ TARGET_URL }}:{{ TARGET_PORT }}",
+            "xver": 0,
+            "serverNames": [
+              {{ TARGET_FQDNS }}
+            ],
+            "privateKey": "{{ PRIVATE_KEY }}",
+            "shortIds": [
+              ""
             ]
           }
         },
@@ -43,8 +41,7 @@
     ],
     "outbounds": [
       {
-        "protocol": "freedom",
-        "settings": {}
+        "protocol": "freedom"
       }
     ]
   }

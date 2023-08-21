@@ -1,10 +1,68 @@
 import os
-import getopt
 import sys
 import subprocess
 import jinja2
 import random
 import string
+import pathlib
+
+CONFIG_DIR = pathlib.Path("/etc/d2ray")
+PRIVKEY = CONFIG_DIR.joinpath("certs/private_key")
+PUBKEY = CONFIG_DIR.joinpath("certs/public_key")
+LOG_DIR = CONFIG_DIR.joinpath("logs")
+XRAY_BIN = pathlib.Path("/opt/xray/xray")
+
+class d2args:
+    port : int
+    target_port : int
+    target_url : str
+    log_level : str
+    users : list[str]
+    def __init__(self) -> None:
+        self.port = 443
+        self.target_port = 443
+        self.target_url = "localhost"
+        self.log_level = "warn"
+        self.users = [''.join(random.choices(string.ascii_uppercase + string.digits, k=24))]
+
+    def from_env(self) -> None:
+        env = os.getenv("PORT")
+        if env != None:
+            self.port = int(env)
+
+        env = os.getenv("TARGET_PORT")
+        if env != None:
+            self.target_port = int(env)  
+
+        env = os.getenv("TARGET_URL")
+        if env != None:
+            self.target_url = env
+
+        env = os.getenv("LOG_LEVEL")
+        if env != None:
+            self.log_level = env        
+
+        env = os.getenv("USERS")
+        if env != None:
+            self.users = env.split(",")
+
+    def __str__(self):
+        ret = (f"Port: {self.port}\n"
+               f"Target Port: {self.target_port}\n"
+               f"Target URL: {self.target_url}\n"
+               f"Log Level: {self.log_level}\n"
+               f"Users: {', '.join(self.users)}"
+        )
+        return ret
+
+    def get_users_json(self) -> str:
+        ret : str= ""
+        for i in range(len(users)):
+            if (i > 0):
+                ret = ret + ","
+            ret = ret + "{\"id\": \"" + users[i][0] + "\",\"flow\": \"" + users[i][1] + "\"}"
+        return ret
+
 
 def process_directory(path : str, vars : dict[str, str], delete_template : bool = True) -> None:
     for f in os.listdir(path):
@@ -20,103 +78,76 @@ def process_directory(path : str, vars : dict[str, str], delete_template : bool 
             if delete_template:
                 subprocess.check_call(f"rm {full_path}", shell=True)
 
+def build_target_fqdns(url : str) -> str:
+    prefix = "www."
+    fqdns = [url, f"{prefix}{url}"]
+    if url.startswith(prefix) and len(url) > len(prefix):
+        fqdns.append(url[len(prefix):])
+    return ', '.join(['"' + item + '"' for item in fqdns])
 
-def parse_user_flow(s : str) -> list[tuple[str,str]]:
-    users = []
-    userconfs : list[str] = s.split(",")
-    for userconf in userconfs:
-        if len(userconf) == 0:
-            continue
-        ele = userconf.split("@")
-        username = ele[0]
-        if (len(ele) > 1):
-            flow = ele[1]
-        else:
-            flow = "xtls-rprx-vision"
-        users.append((username, flow))
-    return users
+def build_users_json(users: list[str]) -> str:
+    return ', '.join(["{\"id\": \"" + item + "\", \"flow\": \"xtls-rprx-vision\"}" for item in users])
 
+def build_jinja_dict(args : d2args, skey : str) -> dict[str, str]:
+    jinja_dict : dict[str,str] = dict()
+    jinja_dict["PORT"] = str(args.port)
 
-def build_users_json(users: list[tuple[str, str]]) -> str:
-    ret : str= ""
-    for i in range(len(users)):
-        if (i > 0):
-            ret = ret + ","
-        ret = ret + "{\"id\": \"" + users[i][0] + "\",\"flow\": \"" + users[i][1] + "\"}"
-    return ret
+    jinja_dict["TARGET_URL"] = args.target_url
+    jinja_dict["TARGET_PORT"] = str(args.target_port)
+    jinja_dict["TARGET_FQDNS"] = build_target_fqdns(args.target_url)
 
-NGINX_LOCATION_TEMPLATE = '''
-    	location /{{ USER }} {
-			root /opt/nginx;
-			autoindex on;
-		}
-'''
+    jinja_dict["LOG_DIR"] = str(LOG_DIR)
+    jinja_dict["LOG_LEVEL"] = args.log_level
 
-def build_nginx_locations(users: list[tuple[str, str]]) -> str:
-    ret = ""
-    for user in users:
-        ret += jinja2.Environment().from_string(NGINX_LOCATION_TEMPLATE).render(USER = user[0]) + "\n"
-    return ret
+    jinja_dict["USERS"] = build_users_json(args.users)
+    jinja_dict["PRIVATE_KEY"] = skey
+
+    return jinja_dict
+
+def parse_xray_x25519_output(stdout : str) -> tuple[str, str]:
+    skey = None
+    pkey = None
+    lines = stdout.split("\n")
+    if len(lines) < 2:
+        raise Exception(f"Unknown Xray output format:\n\"{stdout}\"\n")
     
+    priv_key_hdr = "Private key: "
+    pub_key_hdr = "Public key: "
+    for line in lines:
+        if line.startswith(priv_key_hdr):
+            skey = line[len(priv_key_hdr):]
+        elif line.startswith(pub_key_hdr):
+            pkey = line[len(pub_key_hdr):]
+    if (skey == None) or (pkey == None):
+        raise Exception(f"Unable to extract private or public key from Xray output:\n\"{stdout}\"\n")
+    return (skey.strip(), pkey.strip())
 
-try:
-    opts, _ = getopt.getopt(sys.argv[1:], "u:p:f:")
-except getopt.GetoptError as err:
-    # print help information and exit:
-    print(err, flush=True)  # will print something like "option -a not recognized"
-    exit(1)
+def main():
+    args = d2args()
+    args.from_env()
 
-port : int = 443
-users : list[str] = [''.join(random.choices(string.ascii_uppercase + string.digits, k=24))]
-fqdn : str = "example.com"
+    print("====== init.py ======", flush=True)
+    print(f"Checking server private key...", flush=True)
+    if not PRIVKEY.exists():
+        print(f"Server private key not found at {PRIVKEY}. Generating...")
+        skey, _ = parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519", shell = True).decode())
+        with open(PRIVKEY, "w") as f:
+            f.write(skey)
+    
+    with open(PRIVKEY, "r") as f:
+        skey = f.read().strip()
 
-for o, a in opts:
-    if o == "-u":
-        users = parse_user_flow(a)
-    elif o == "-p":
-        port = int(a)
-    elif o == "-f":
-        fqdn = a
-    else:
-        print(f"Unknown option {o}, ignoring...", flush=True)
-        exit(1)
+    print(f"Deriving public key...", flush=True)
+    _, pkey = parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519 -i {skey}", shell = True).decode())
 
-print("====== init.py ======", flush=True)
-print("Configuration:\n" + \
-      f"    port = {port}\n" + \
-      f"    fqdn = {fqdn}\n" + \
-      f"    users = {str(users)}", flush=True)
+    with open(PUBKEY, "w") as f:
+        f.write(pkey)
 
-print(f"Checking certs for {fqdn}...", flush=True)
-if (os.path.exists(f"/etc/letsencrypt/live/{fqdn}")):
-    print("Found existing certs, trying to renew...", flush=True)
-    subprocess.check_call(f"certbot renew", shell=True)
-else:
-    print("Unable to locate certs, generating...", flush=True)
-    subprocess.check_call(f"certbot certonly -n --standalone -m dummy@dummy.com --agree-tos --no-eff-email -d {fqdn}", shell=True)
+    print(f"\nConfigurations:\n{str(args)}\nPublic key: {pkey}\n", flush=True)
 
-jinja_dict : dict[str,str] = dict()
-jinja_dict["XRAY_USERS"] = build_users_json(users)
-jinja_dict["PORT"] = str(port)
-jinja_dict["FQDN"] = str(fqdn)
-jinja_dict["NGINX_LOCATIONS"] = build_nginx_locations(users)
+    template = build_jinja_dict(args, skey)
 
-print(f"Processing Xray config files...", flush=True)
-process_directory("/opt/xray", jinja_dict)
+    print(f"Processing config files...", flush=True)
+    process_directory("/opt/xray", template)
 
-print(f"Processing Nginx config files...", flush=True)
-process_directory("/opt/nginx", jinja_dict)
-
-for u in users:
-    print(f"Preparing directory for user {u[0]}...", flush=True)
-    user_dir = f"/opt/nginx/{u[0]}"
-    subprocess.check_call(f"mkdir -p {user_dir}", shell=True)
-    subprocess.check_call(f"cp -r /opt/user/* {user_dir}/", shell=True)
-
-    jinja_dict["USER"] = u[0]
-    jinja_dict["FLOW"] = u[1]
-    process_directory(user_dir, jinja_dict)
-    subprocess.check_call(f"ln -sf /downloads/others {user_dir}/others/downloads", shell=True)
-    subprocess.check_call(f"ln -sf /downloads/android {user_dir}/android/downloads", shell=True)
-
-exit(0)
+main()
