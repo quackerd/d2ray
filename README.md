@@ -1,30 +1,28 @@
 [![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
-# Xray + xtls-vision + nginx fallback all in Docker!
-## What is d2ray?
-d2ray is a single Docker container that provides easy and braindead configuration for xtls-vision + nginx fallback. d2ray also offers currently hardcoded setup instructions and Xray binary packages for various OSes and architectures.
+# Xray + xtls-vision + reality all in Docker!
+## What Is d2ray?
+d2ray is a single Docker container that provides easy 5-minute setups and braindead configurations for xtls-vision + reality.
 
-## Features
-- Easy 5-minutes setup.
-- Automatic generation and renewal of Let's Encrypt SSL certificates.
-- Packaged Xray binary on the fallback website.
-- Per-user setup instructions for various architectures.
-
-## How to use?
-1. Download the `docker-compose.yml` from this repo.
-2. Create a `.env` file in the same directory and configure the instance to your liking.
-    - See `.env` in the current repo.
-    - `PORT`: the port to run Xray on.
-    - `FQDN`: the domain name of your server, used to generate SSL certificates.
-    - `USERS`: comma separated list of `USERCONF` allowed access to both Xray and resource downloads. Each `USERCONF` is of format `userid@flow`. `userid` is used as the credential for Xray. If `flow` is not specified it defaults to `xtls-rprx-vision`. For example, setting `USERS` to `user1@xtls-rprx-direct,user2` means two users: `user1` with flow `xtls-rprx-direct` and `user2` with flow `xtls-rprx-vision`. Note that since Xray 1.7.2, xtls-direct is deprecated so I recommend you not specify `flow` and just use the default.
-    - `LOGDIR`: the directory to store logs, currently required.
+## Quickstart
+1. You can start with the example `docker-compose.yml` from this repo.
+2. Adjust environment variables:
+    - `PORT`: the port Xray listens on.
+    - `TARGET_URL`: the target domain to redirect non proxy connections.
+    - `TARGET_PORT`: the target port to redirect non proxy connections.
+    - `USERS`: comma separated list of usernames that can access Xray.
+    - `LOG_LEVEL`: the verbosity of Xray logs. Default: `warn`.
 3. `docker compose up -d`
-4. You can access the Xray service using an Xray client. You can access the per-user resource downloads by accessing `https://your-domain:your-port`, entering the `userid` in the textbox at the bottom of the page and clicking the `Download` button next to it.
+4. Test your connection.
 
-## How to update?
+## Docker Volume
+All d2ray logs and private/public key pairs are stored in `/etc/d2ray` in the container. You can mount an external folder to that location to persist settings. See the example `docker-compose.yml`.
+
+## Key Generation
+d2ray checks whether a private key file exists at path `/etc/xray/certs/private_key` and generates a new private key if not found.
+
+You can either supply a pre-generated private key using `xray x25519` or let d2ray generate one. The corresponding public key is both printed to the container log (`docker logs`) and written to `/etc/xray/certs/public_key`, which clients use to connect. 
+
+## How To Update?
 - `docker compose down`
 - `docker compose pull`
 - `docker compose up -d`
-
-## Notes
-1. Port 80 must be available on the host as it is required to obtain SSL certificates.
-2. Note the `docker compose` instead of `docker-compose` commands. d2ray is only tested with the newer docker-compose-plugin (install with your distribution's package manager) as opposed to legacy docker-compose.
