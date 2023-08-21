@@ -28,3 +28,6 @@ If you are generating the private key yourself, the key file must contain exactl
 - `docker compose down`
 - `docker compose pull`
 - `docker compose up -d`
+
+## Notes
+- The old xtls-vision + TLS + Nginx fallback has been branched out to `vision` branch.
