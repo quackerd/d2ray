@@ -113,10 +113,10 @@ def parse_xray_x25519_output(stdout : str) -> tuple[str, str]:
     return (skey.strip(), pkey.strip())
 
 def main():
+    print(f"Initializing d2ray...", flush=True)
     args = d2args()
     args.from_env()
 
-    print("====== init.py ======", flush=True)
     print(f"Checking key file...", flush=True)
     if not KEY_FILE.exists():
         print(f"Key file not found at {KEY_FILE}. Generating...")
