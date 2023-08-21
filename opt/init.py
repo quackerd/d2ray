@@ -1,5 +1,4 @@
 import os
-import sys
 import subprocess
 import jinja2
 import random
@@ -53,14 +52,6 @@ class d2args:
                f"Log Level: {self.log_level}\n"
                f"Users: {', '.join(self.users)}"
         )
-        return ret
-
-    def get_users_json(self) -> str:
-        ret : str= ""
-        for i in range(len(users)):
-            if (i > 0):
-                ret = ret + ","
-            ret = ret + "{\"id\": \"" + users[i][0] + "\",\"flow\": \"" + users[i][1] + "\"}"
         return ret
 
 
