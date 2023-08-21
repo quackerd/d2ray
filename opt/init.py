@@ -6,8 +6,7 @@ import string
 import pathlib
 
 CONFIG_DIR = pathlib.Path("/etc/d2ray")
-PRIVKEY = CONFIG_DIR.joinpath("certs/private_key")
-PUBKEY = CONFIG_DIR.joinpath("certs/public_key")
+KEY_FILE = CONFIG_DIR.joinpath("certs/keys")
 LOG_DIR = CONFIG_DIR.joinpath("logs")
 XRAY_BIN = pathlib.Path("/opt/xray/xray")
 
@@ -118,21 +117,23 @@ def main():
     args.from_env()
 
     print("====== init.py ======", flush=True)
-    print(f"Checking server private key...", flush=True)
-    if not PRIVKEY.exists():
-        print(f"Server private key not found at {PRIVKEY}. Generating...")
-        skey, _ = parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519", shell = True).decode())
-        with open(PRIVKEY, "w") as f:
-            f.write(skey)
+    print(f"Checking key file...", flush=True)
+    if not KEY_FILE.exists():
+        print(f"Key file not found at {KEY_FILE}. Generating...")
+        out = subprocess.check_output(f"{XRAY_BIN} x25519", shell = True).decode()
+        with open(KEY_FILE, "w") as f:
+            f.write(out)
     
-    with open(PRIVKEY, "r") as f:
-        skey = f.read().strip()
+    with open(KEY_FILE, "r") as f:
+        out = f.read()
 
-    print(f"Deriving public key...", flush=True)
-    _, pkey = parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519 -i {skey}", shell = True).decode())
+    print(f"Reading keys...", flush=True)
+    skey, pkey = parse_xray_x25519_output(out)
 
-    with open(PUBKEY, "w") as f:
-        f.write(pkey)
+    print(f"Verifying public key...", flush=True)
+    _, _pkey = parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519 -i {skey}", shell = True).decode())
+    if (_pkey != pkey):
+        print(f"Unmatching public key: expected \"{_pkey}\" but key file provided \"{pkey}\". Please verify the key file.", flush=True)
 
     print(f"\nConfigurations:\n{str(args)}\nPublic key: {pkey}\n", flush=True)
 

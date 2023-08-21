@@ -18,9 +18,11 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
 All d2ray logs and private/public key pairs are stored in `/etc/d2ray` in the container. You can mount an external folder to that location to persist settings. See the example `docker-compose.yml`.
 
 ## Key Generation
-d2ray checks whether a private key file exists at path `/etc/xray/certs/private_key` and generates a new private key if not found.
+d2ray checks whether a key file exists at path `/etc/xray/certs/keys` and generates a new key pair if not found.
 
-You can either supply a pre-generated private key using `xray x25519` or let d2ray generate one. The corresponding public key is both printed to the container log (`docker logs`) and written to `/etc/xray/certs/public_key`, which clients use to connect. 
+You can either supply a pre-generated private key using `xray x25519` or let d2ray generate one. The corresponding public key is printed to the container log (`docker logs`), which clients use to connect. 
+
+If you are generating the private key yourself, the key file must contain exactly the output of `xray x25519`.
 
 ## How To Update?
 - `docker compose down`
