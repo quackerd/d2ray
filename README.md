@@ -22,7 +22,7 @@ d2ray checks whether a key file exists at path `/etc/xray/certs/keys` and genera
 
 You can either supply a pre-generated private key using `xray x25519` or let d2ray generate one. The corresponding public key is printed to the container log (`docker logs`), which clients use to connect. 
 
-If you are generating the private key yourself, the key file must contain exactly the output of `xray x25519`.
+If you are generating the keys yourself, the key file must contain exactly the output of `xray x25519`.
 
 ## How To Update?
 - `docker compose down`
