@@ -1,8 +1,8 @@
 {
     "log": {
       "loglevel": "{{LOG_LEVEL}}",
-      "access": "{{LOG_DIR}}/access.log",
-      "error": "{{LOG_DIR}}/error.log"
+      "access": "{{LOG_DIR}}/xray/access.log",
+      "error": "{{LOG_DIR}}/xray/error.log"
     },
     "inbounds": [
       {
