@@ -10,10 +10,11 @@ services:
       - 8443:8443
     environment:
       - PORT=8443
-      - TARGET_HOST=example.com
+      - TARGET_HOST=www.apple.com
       - TARGET_PORT=443
-      - TARGET_SNI=www.example.com,example.com
-      - USERS=exampleuser1,exampleuser2
+      - TARGET_SNI=www.apple.com,apple.com
+      - USERS=alice,bob,eve
+      - PRIVATE_KEY=KE5MCI5e395fub55O1lsNPzvWw9nNAyCaecRSp3BvHg # Do NOT use this random key
       - LOG_LEVEL=warn
     restart: unless-stopped
     networks:
