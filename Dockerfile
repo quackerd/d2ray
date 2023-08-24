@@ -3,7 +3,7 @@ FROM alpine:latest
 ENV VER_XRAY 1.8.3
 
 # install packages
-RUN set -xe && apk add --no-cache unzip wget openssl python3 py3-jinja2 supervisor apache2-utils bash
+RUN set -xe && apk add --no-cache unzip wget openssl python3 py3-jinja2 supervisor apache2-utils bash libqrencode
 
 # download packages
 RUN set -xe && \
@@ -13,11 +13,6 @@ RUN set -xe && \
     rm -rf /downloads
 
 COPY ./opt /opt/
-
-# nginx
-# RUN set -xe && addgroup www && \
-#     adduser -H -D -S -s /bin/false www -G www && \
-#     chown -R www:www /opt/nginx
 
 # remove packages
 RUN set -xe && apk del unzip wget

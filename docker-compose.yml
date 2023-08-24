@@ -9,6 +9,7 @@ services:
     ports:
       - 8443:8443
     environment:
+      - HOST=myvps.com
       - PORT=8443
       - TARGET_HOST=www.apple.com
       - TARGET_PORT=443

@@ -2,15 +2,18 @@ import os
 import subprocess
 import jinja2
 import random
+import sys
 import string
 import pathlib
 
 CONFIG_DIR = pathlib.Path("/etc/d2ray")
 KEY_FILE = CONFIG_DIR.joinpath("certs/keys")
 LOG_DIR = CONFIG_DIR.joinpath("logs")
+QR_DIR = CONFIG_DIR.joinpath("users")
 XRAY_BIN = pathlib.Path("/opt/xray/xray")
 
 class d2args:
+    host : str
     port : int
     target_port : int
     target_host : str
@@ -52,6 +55,7 @@ class d2args:
         return (skey.strip(), pkey.strip())
 
     def _from_env(self) -> None:
+        self.host = self._get_env("HOST")
         self.target_host = self._get_env("TARGET_HOST")
         self.target_sni = self._get_env("TARGET_SNI").split(",")
         self.users = self._get_env("USERS").split(",")
@@ -76,7 +80,8 @@ class d2args:
         _ , self.public_key = self._parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519 -i {self.private_key}", shell = True).decode())
 
     def __str__(self) -> str:
-        ret = (f"Port: {self.port}\n"
+        ret = (f"Host: {self.host}\n"
+               f"Port: {self.port}\n"
                f"Target Port: {self.target_port}\n"
                f"Target Host: {self.target_host}\n"
                f"Target SNI: {', '.join(self.target_sni)}\n"
@@ -84,6 +89,19 @@ class d2args:
                f"Users: {', '.join(self.users)}\n"
                f"Public Key: {self.public_key}"
         )
+        return ret
+    
+    def get_shareable_links(self) -> dict[str, str]:
+        ret = {}
+        for user in self.users:
+            ret[user] = (f"vless://{user}@{self.host}:{self.port}/?"
+                "flow=xtls-rprx-vision&"
+                "type=tcp&security=reality&"
+                "fp=chrome&"
+                f"sni={','.join(self.target_sni)}&"
+                f"pbk={self.public_key}#"
+                f"{self.host}"
+                )
         return ret
 
 def process_directory(path : str, vars : dict[str, str], delete_template : bool = True) -> None:
@@ -132,6 +150,22 @@ def main():
 
     print(f"Processing config files...", flush=True)
     process_directory("/opt/xray", template)
+
+    print(f"Generating shareable links...", flush=True)
+    links = args.get_shareable_links()
+    
+    for user, link in links.items():
+        dir = QR_DIR.joinpath(user)
+        os.makedirs(str(dir), exist_ok=True)
+        linkf = dir.joinpath("link.txt")
+        with open(str(linkf), "w") as f:
+            f.write(link + "\n")
+        subprocess.check_output(f"qrencode -o {str(dir.joinpath('qrcode.png'))} < {linkf}", shell=True)
+        print("")
+        print(f"User \"{user}\":", flush=True)
+        print(f"{link}")
+        print(subprocess.check_output(f"qrencode -t ansiutf8 < {linkf}", shell=True).decode())
+        print("")
 
     print(f"Initialization completed.\n", flush=True)
 
