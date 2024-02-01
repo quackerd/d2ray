@@ -27,7 +27,11 @@
             "privateKey": "{{ PRIVATE_KEY }}",
             "shortIds": [
               ""
-            ]
+            ],
+            "sockopt": {
+              "tcpFastOpen": true,
+              "tcpNoDelay": true
+            }
           }
         },
         "sniffing": {
