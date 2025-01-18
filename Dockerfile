@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ENV VER_XRAY 1.8.24
+ENV VER_XRAY 24.12.31
 
 # install packages
 RUN set -xe && apk add --no-cache unzip wget openssl python3 py3-jinja2 supervisor apache2-utils bash libqrencode libqrencode-tools
