@@ -1,5 +1,5 @@
 [![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
-# Xray + xtls-vision + reality + xhttp all in Docker!
+# Xray + reality + xhttp all in Docker!
 ## What Is d2ray?
 d2ray is a single Docker container that provides easy 5-minute setups and braindead configurations for xtls-vision + reality.
 
