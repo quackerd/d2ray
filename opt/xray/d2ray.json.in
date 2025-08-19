@@ -4,8 +4,28 @@
       "access": "{{LOG_DIR}}/xray/access.log",
       "error": "{{LOG_DIR}}/xray/error.log"
     },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+           {
+               "type": "field",
+               "ip": [
+                   "geoip:cn"
+               ],
+               "outboundTag": "block"
+           },
+           {
+               "type": "field",
+               "domain": [
+                   "geosite:cn"
+               ],
+               "outboundTag": "block"
+           }
+        ]
+    },
     "inbounds": [
       {
+        "listen": "0.0.0.0",
         "port": {{ PORT }},
         "protocol": "vless",
         "settings": {
@@ -15,14 +35,17 @@
           "decryption": "none"
         },
         "streamSettings": {
-          "network": "tcp",
+          "network": "xhttp",
+          "xhttpSettings": {
+              "path": "{{ XHTTP_PATH }}"
+          },
           "security": "reality",
           "realitySettings": {
             "show": false,
-            "dest": "{{ TARGET_HOST }}:{{ TARGET_PORT }}",
+            "target": "{{ TARGET_HOST }}:{{ TARGET_PORT }}",
             "xver": 0,
             "serverNames": [
-              {{ TARGET_SNI }}
+              "{{ TARGET_HOST }}"
             ],
             "privateKey": "{{ PRIVATE_KEY }}",
             "shortIds": [
@@ -38,14 +61,20 @@
           "enabled": true,
           "destOverride": [
               "http",
-              "tls"
+              "tls",
+              "quic"
           ]
         }
       }
     ],
     "outbounds": [
-      {
-        "protocol": "freedom"
-      }
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "{{ CN_PROTOCOL }}",
+            "tag": "block"
+        }
     ]
   }

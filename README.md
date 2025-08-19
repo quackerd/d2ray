@@ -1,5 +1,5 @@
 [![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
-# Xray + xtls-vision + reality all in Docker!
+# Xray + xtls-vision + reality + xhttp all in Docker!
 ## What Is d2ray?
 d2ray is a single Docker container that provides easy 5-minute setups and braindead configurations for xtls-vision + reality.
 
@@ -10,7 +10,8 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
     - `PORT`: the port Xray listens on. `Optional, default = 443`.
     - `TARGET_HOST`: the target host to redirect non proxy connections. `Required`.
     - `TARGET_PORT`: the target port to redirect non proxy connections. `Optional, default = 443`.
-    - `TARGET_SNI`: comma separated list of the target website's SNIs. `Required`.
+    - `XHTTP_PATH`: the path for XHTTP protocol. `Optional`.
+    - `BLOCK_CN`: blocks all connections to CN IPs & domains. `Optional, default = true`.
     - `PRIVATE_KEY` : server's private key. `Optional`.
     - `USERS`: comma separated list of usernames that can access Xray. `Required`.
     - `LOG_LEVEL`: the verbosity of Xray logs. `Optional, default = warn`.
@@ -25,6 +26,8 @@ The logs and private key are stored in `/etc/d2ray` in the container. You can mo
 If `PRIVATE_KEY` is provided, d2ray uses that key. Otherwise, d2ray generates a new key pair and persists it in `/etc/xray/certs/keys`. The corresponding public key is always printed to the container log, which clients use to connect. 
 
 To make d2ray regenerate a new key pair, manually delete the key file `/etc/xray/certs/keys` from the mounted volume.
+
+The same applies to `XHTTP_PATH`, d2ray stores a randomly generated string in `/etc/xray/certs/xpath`.
 
 ## How To Update?
 - `docker compose down`

@@ -13,8 +13,9 @@ services:
       - PORT=8443
       - TARGET_HOST=www.apple.com
       - TARGET_PORT=443
-      - TARGET_SNI=www.apple.com,apple.com
       - USERS=alice,bob,eve
+      - BLOCK_CN=true
+      - XHTTP_PATH=/examplepath # Change me
       - PRIVATE_KEY=KE5MCI5e395fub55O1lsNPzvWw9nNAyCaecRSp3BvHg # Do NOT use this random key
       - LOG_LEVEL=warn
     restart: unless-stopped

@@ -1,12 +1,14 @@
 import os
 import subprocess
 import jinja2
+import urllib.parse
 import random
 import sys
 import string
 import pathlib
 
 CONFIG_DIR = pathlib.Path("/etc/d2ray")
+XHTTP_PATH_FILE = CONFIG_DIR.joinpath("certs/xpath")
 KEY_FILE = CONFIG_DIR.joinpath("certs/keys")
 LOG_DIR = CONFIG_DIR.joinpath("logs")
 QR_DIR = CONFIG_DIR.joinpath("users")
@@ -17,7 +19,8 @@ class d2args:
     port : int
     target_port : int
     target_host : str
-    target_sni : str
+    xpath : str
+    block_cn : bool
     log_level : str
     private_key : str
     public_key : str
@@ -34,6 +37,10 @@ class d2args:
             else:
                 return default
         return env
+    
+    @staticmethod
+    def _gen_xpath(N : int = 16) -> str:
+        return '/' + ''.join(random.choices(string.ascii_lowercase + string.digits, k = N))
 
     @staticmethod
     def _parse_xray_x25519_output(stdout : str) -> tuple[str, str]:
@@ -57,7 +64,6 @@ class d2args:
     def _from_env(self) -> None:
         self.host = self._get_env("HOST")
         self.target_host = self._get_env("TARGET_HOST")
-        self.target_sni = self._get_env("TARGET_SNI").split(",")
         self.users = self._get_env("USERS").split(",")
 
         self.port = int(self._get_env("PORT", default="443", required=False))
@@ -78,13 +84,30 @@ class d2args:
                    self.private_key = f.read().strip()
 
         _ , self.public_key = self._parse_xray_x25519_output(subprocess.check_output(f"{XRAY_BIN} x25519 -i {self.private_key}", shell = True).decode())
+        
+        self.xpath = self._get_env("XHTTP_PATH", default=None, required=False)
+        if (self.xpath == None):
+            print(f"XHTTP path not provided.", flush=True)
+            if not XHTTP_PATH_FILE.exists():
+                print(f"XHTTP path file {XHTTP_PATH_FILE} not found. Generating a new path...")
+                self.xpath = self._gen_xpath()
+                with open(XHTTP_PATH_FILE, "w") as f:
+                    f.write(self.xpath)
+            else:
+                print(f"Reading from XHTTP path file {XHTTP_PATH_FILE} ...")
+                with open(XHTTP_PATH_FILE, "r") as f:
+                   self.xpath = f.read().strip()
+            
+        block_cn : str = self._get_env("BLOCK_CN", default="true", required=False)
+        self.block_cn = block_cn.lower() == "true".lower()
 
     def __str__(self) -> str:
         ret = (f"Host: {self.host}\n"
                f"Port: {self.port}\n"
                f"Target Port: {self.target_port}\n"
                f"Target Host: {self.target_host}\n"
-               f"Target SNI: {', '.join(self.target_sni)}\n"
+               f"XHTTP Path: {self.xpath}\n"
+               f"Block CN: {self.block_cn}\n"
                f"Log Level: {self.log_level}\n"
                f"Users: {', '.join(self.users)}\n"
                f"Public Key: {self.public_key}"
@@ -94,13 +117,14 @@ class d2args:
     def get_shareable_links(self) -> dict[str, str]:
         ret = {}
         for user in self.users:
-            ret[user] = (f"vless://{user}@{self.host}:{self.port}/?"
-                "flow=xtls-rprx-vision&"
-                "type=tcp&security=reality&"
+            ret[user] = (f"vless://{urllib.parse.quote(user)}@{self.host}:{self.port}/?"
+                "type=xhttp&"
+                f"path={urllib.parse.quote(self.xpath)}&"
+                "security=reality&"
+                f"sni={self.target_host}&"
                 "fp=chrome&"
-                f"sni={','.join(self.target_sni)}&"
                 f"pbk={self.public_key}#"
-                f"{self.host}"
+                f"{urllib.parse.quote(self.host)}"
                 )
         return ret
 
@@ -118,11 +142,8 @@ def process_directory(path : str, vars : dict[str, str], delete_template : bool 
             if delete_template:
                 subprocess.check_call(f"rm {full_path}", shell=True)
 
-def build_target_snis(snis : list[str]) -> str:
-    return ', '.join(['"' + item + '"' for item in snis])
-
 def build_users_json(users: list[str]) -> str:
-    return ', '.join(["{\"id\": \"" + item + "\", \"flow\": \"xtls-rprx-vision\"}" for item in users])
+    return ', '.join(["{\"id\": \"" + item + "\", \"flow\": \"\"}" for item in users])
 
 def build_jinja_dict(args : d2args) -> dict[str, str]:
     jinja_dict : dict[str,str] = dict()
@@ -130,13 +151,15 @@ def build_jinja_dict(args : d2args) -> dict[str, str]:
     
     jinja_dict["TARGET_HOST"] = args.target_host
     jinja_dict["TARGET_PORT"] = str(args.target_port)
-    jinja_dict["TARGET_SNI"] = build_target_snis(args.target_sni)
+    jinja_dict["XHTTP_PATH"] = args.xpath
 
     jinja_dict["LOG_DIR"] = str(LOG_DIR)
     jinja_dict["LOG_LEVEL"] = args.log_level
 
     jinja_dict["USERS"] = build_users_json(args.users)
     jinja_dict["PRIVATE_KEY"] = args.private_key
+
+    jinja_dict["CN_PROTOCOL"] = "blackhole" if args.block_cn else "freedom"
     return jinja_dict
 
 
