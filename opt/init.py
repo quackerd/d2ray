@@ -12,7 +12,11 @@ XHTTP_PATH_FILE = CONFIG_DIR.joinpath("certs/xpath")
 KEY_FILE = CONFIG_DIR.joinpath("certs/keys")
 LOG_DIR = CONFIG_DIR.joinpath("logs")
 QR_DIR = CONFIG_DIR.joinpath("users")
-XRAY_BIN = pathlib.Path("/opt/xray/xray")
+
+APP_DIR = pathlib.Path("/opt/xray")
+XRAY_BIN = APP_DIR.joinpath("xray")
+RULES_CN = APP_DIR.joinpath("rules_blockcn.json")
+RULES_ADS = APP_DIR.joinpath("rules_blockads.json")
 
 class d2args:
     host : str
@@ -25,6 +29,7 @@ class d2args:
     log_level : str
     private_key : str
     public_key : str
+    rules : list[str]
     users : list[str]
     def __init__(self) -> None:
         self._from_env()
@@ -104,6 +109,18 @@ class d2args:
         block_ads : str = self._get_env("BLOCK_ADS", default="true", required=False)
         self.block_ads = block_ads.lower() == "true".lower()
 
+        self.rules = []
+        
+        # block ads first
+        if (self.block_ads):
+            with open(RULES_ADS, "r") as f:
+                self.rules.append(f.read())
+
+        if (self.block_cn):
+            with open(RULES_CN, "r") as f:
+                self.rules.append(f.read())
+
+
     def __str__(self) -> str:
         ret = (f"Host: {self.host}\n"
                f"Port: {self.port}\n"
@@ -163,8 +180,8 @@ def build_jinja_dict(args : d2args) -> dict[str, str]:
     jinja_dict["USERS"] = build_users_json(args.users)
     jinja_dict["PRIVATE_KEY"] = args.private_key
 
-    jinja_dict["CN_PROTOCOL"] = "blackhole" if args.block_cn else "freedom"
-    jinja_dict["ADS_PROTOCOL"] = "blackhole" if args.block_cn else "freedom"
+    jinja_dict["RULES"] = ",".join(args.rules)
+
     return jinja_dict
 
 

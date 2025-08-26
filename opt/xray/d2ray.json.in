@@ -7,34 +7,7 @@
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
-          {
-              "type": "field",
-              "domain": [
-                  "geosite:category-ads-all"
-              ],
-              "outboundTag": "adblock"
-          },
-          {
-               "type": "field",
-               "domain": [
-                   "geosite:geolocation-!cn"
-               ],
-               "outboundTag": "direct"
-           },
-           {
-               "type": "field",
-               "ip": [
-                   "geoip:cn"
-               ],
-               "outboundTag": "cnblock"
-           },
-           {
-               "type": "field",
-               "domain": [
-                   "geosite:cn"
-               ],
-               "outboundTag": "cnblock"
-           }
+          {{ RULES }}
         ]
     },
     "inbounds": [
@@ -87,12 +60,8 @@
             "tag": "direct"
         },
         {
-            "protocol": "{{ CN_PROTOCOL }}",
-            "tag": "cnblock"
-        },
-        {
-            "protocol": "{{ ADS_PROTOCOL }}",
-            "tag": "adblock"
+            "protocol": "blackhole",
+            "tag": "block"
         }
     ]
   }

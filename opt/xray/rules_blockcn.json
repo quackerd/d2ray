@@ -1,0 +1,21 @@
+{
+    "type": "field",
+    "domain": [
+        "geosite:geolocation-!cn"
+    ],
+    "outboundTag": "direct"
+},
+{
+    "type": "field",
+    "ip": [
+        "geoip:cn"
+    ],
+    "outboundTag": "block"
+},
+{
+    "type": "field",
+    "domain": [
+        "geosite:cn"
+    ],
+    "outboundTag": "block"
+}
