@@ -21,6 +21,7 @@ class d2args:
     target_host : str
     xpath : str
     block_cn : bool
+    block_ads : bool
     log_level : str
     private_key : str
     public_key : str
@@ -100,6 +101,8 @@ class d2args:
             
         block_cn : str = self._get_env("BLOCK_CN", default="true", required=False)
         self.block_cn = block_cn.lower() == "true".lower()
+        block_ads : str = self._get_env("BLOCK_ADS", default="true", required=False)
+        self.block_ads = block_ads.lower() == "true".lower()
 
     def __str__(self) -> str:
         ret = (f"Host: {self.host}\n"
@@ -108,6 +111,7 @@ class d2args:
                f"Target Host: {self.target_host}\n"
                f"XHTTP Path: {self.xpath}\n"
                f"Block CN: {self.block_cn}\n"
+               f"Block ADs: {self.block_ads}\n"
                f"Log Level: {self.log_level}\n"
                f"Users: {', '.join(self.users)}\n"
                f"Public Key: {self.public_key}"
@@ -160,6 +164,7 @@ def build_jinja_dict(args : d2args) -> dict[str, str]:
     jinja_dict["PRIVATE_KEY"] = args.private_key
 
     jinja_dict["CN_PROTOCOL"] = "blackhole" if args.block_cn else "freedom"
+    jinja_dict["ADS_PROTOCOL"] = "blackhole" if args.block_cn else "freedom"
     return jinja_dict
 
 

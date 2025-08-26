@@ -15,6 +15,7 @@ services:
       - TARGET_PORT=443
       - USERS=alice,bob,eve
       - BLOCK_CN=true
+      - BLOCK_ADS=true
       - XHTTP_PATH=/examplepath # Change me
       - PRIVATE_KEY=KE5MCI5e395fub55O1lsNPzvWw9nNAyCaecRSp3BvHg # Do NOT use this random key
       - LOG_LEVEL=warn

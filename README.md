@@ -12,6 +12,7 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
     - `TARGET_PORT`: the target port to redirect non proxy connections. `Optional, default = 443`.
     - `XHTTP_PATH`: the path for XHTTP protocol. `Optional`.
     - `BLOCK_CN`: blocks all connections to CN IPs & domains. `Optional, default = true`.
+    - `BLOCK_ADS`: blocks all connections to Ad IPs & domains. `Optional, default = true`.
     - `PRIVATE_KEY` : server's private key. `Optional`.
     - `USERS`: comma separated list of usernames that can access Xray. `Required`.
     - `LOG_LEVEL`: the verbosity of Xray logs. `Optional, default = warn`.
