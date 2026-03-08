@@ -60,7 +60,7 @@ class d2args:
         if len(lines) < 2:
             raise Exception(f'Unknown Xray output format:\n"{stdout}"\n')
 
-        priv_key_hdr = "Private key: "
+        priv_key_hdr = "PrivateKey: "
         pub_key_hdr = "Password: "
         for line in lines:
             if line.startswith(priv_key_hdr):
