@@ -1,7 +1,7 @@
-[![Build Status](https://ci.quacker.org/api/badges/d/d2ray/status.svg)](https://ci.quacker.org/d/d2ray)
-# Xray + reality + xhttp all in Docker!
+# Xray + Vision + REALITY all in Docker!
+[![Build](https://git.quacker.org/d/d2ray/badges/workflows/build.yml/badge.svg?branch=master&label=build)](https://git.quacker.org/d/d2ray/actions)
 ## What Is d2ray?
-d2ray is a single Docker container that provides easy 5-minute setups and braindead configurations for xtls-vision + reality.
+d2ray is a single Docker container that provides easy 5-minute setups and braindead configurations for xtls-vision + reality. d2ray is automatically built weekly form the latest [Xray-core](https://github.com/xtls/xray-core) and [geo files](https://github.com/Loyalsoldier/v2ray-rules-dat).
 
 ## Quickstart
 1. You can start with the example `docker-compose.yml` from this repo.
@@ -10,7 +10,6 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
     - `PORT`: the external port Xray listens on. Xray inside the container always listens on 8443 so map your external port to 8443 inside the container.  `Optional, default = 443`.
     - `TARGET_HOST`: the target host to redirect non proxy connections. `Required`.
     - `TARGET_PORT`: the target port to redirect non proxy connections. `Optional, default = 443`.
-    - `XHTTP_PATH`: the path for XHTTP protocol. `Optional`.
     - `BLOCK_CN`: blocks all connections to CN IPs & domains. `Optional, default = true`.
     - `BLOCK_ADS`: blocks all connections to Ad IPs & domains. `Optional, default = true`.
     - `BLOCK_LOCAL`: blocks private IPs. `Optional, default = true`.
@@ -28,8 +27,6 @@ The logs and private key are stored in `/etc/d2ray` in the container. You can mo
 If `PRIVATE_KEY` is provided, d2ray uses that key. Otherwise, d2ray generates a new key pair and persists it in `/etc/xray/certs/keys`. The corresponding public key is always printed to the container log, which clients use to connect.
 
 To make d2ray regenerate a new key pair, manually delete the key file `/etc/xray/certs/keys` from the mounted volume.
-
-The same applies to `XHTTP_PATH`, d2ray stores a randomly generated string in `/etc/xray/certs/xpath`.
 
 ## How To Update?
 - `docker compose down`
