@@ -1,5 +1,5 @@
 #!/bin/sh
-set -xe
+set -euo pipefail
 
 # create directories
 mkdir -p /etc/d2ray/logs
