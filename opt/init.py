@@ -147,7 +147,8 @@ class d2args:
                 "security=reality&"
                 f"sni={self.target_host}&"
                 "fp=chrome&"
-                f"pbk={self.public_key}#"
+                f"pbk={self.public_key}&"
+                f"tfo=1#"
                 f"{urllib.parse.quote(self.host)}"
             )
         return ret
