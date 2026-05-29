@@ -8,7 +8,7 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
 2. Adjust environment variables:
     - `HOST`: the hostname/IP of the server. `REQUIRED`.
     - `PORT`: the external port Xray listens on. Xray inside the container always listens on 8443 so map your external port to 8443 inside the container.  `Optional, default = 443`.
-    - `TARGET_HOST`: the target host to redirect non proxy connections. `Required`.
+    - `TARGET_HOST`: the target host to redirect non proxy connections. `REQUIRED`.
     - `TARGET_PORT`: the target port to redirect non proxy connections. `Optional, default = 443`.
     - `BLOCK_CN`: blocks all connections to CN IPs & domains. `Optional, default = true`.
     - `BLOCK_ADS`: blocks all connections to Ad IPs & domains. `Optional, default = true`.
