@@ -1,9 +1,11 @@
 import os
+import json
 import pathlib
 import random
 import string
 import subprocess
 import urllib.parse
+from typing import Any
 
 import jinja2
 
@@ -27,21 +29,21 @@ class d2args:
     xpath: str
     block_cn: bool
     block_ads: bool
+    block_local: bool
     log_level: str
     private_key: str
     public_key: str
-    rules: list[str]
     users: list[str]
 
     def __init__(self) -> None:
         self._from_env()
 
     @staticmethod
-    def _get_env(name: str, default: str = None, required: bool = True) -> str:
+    def _get_env(name: str, default: str, required: bool = True) -> str:
         env = os.getenv(name)
-        if env == None:
+        if env is None:
             if required:
-                raise Exception(f'Missing environment variable "{name}".')
+                raise RuntimeError(f'Missing required environment variable "{name}".')
             else:
                 return default
         return env
@@ -58,35 +60,33 @@ class d2args:
         pkey = None
         lines = stdout.split("\n")
         if len(lines) < 2:
-            raise Exception(f'Unknown Xray output format:\n"{stdout}"\n')
+            raise RuntimeError(f'Unknown Xray output format:\n"{stdout}"\n')
 
         priv_key_hdr = "PrivateKey: "
-        pub_key_hdr = "Password: "
+        pub_key_hdr = "Password (PublicKey): "
         for line in lines:
             if line.startswith(priv_key_hdr):
                 skey = line[len(priv_key_hdr) :]
             elif line.startswith(pub_key_hdr):
                 pkey = line[len(pub_key_hdr) :]
-        if (skey == None) or (pkey == None):
-            raise Exception(
-                f'Unable to extract private or public key from Xray output:\n"{stdout}"\n'
-            )
+        if (skey is None) or (pkey is None):
+            raise RuntimeError(f'Unable to extract private or public key from Xray output:\n{stdout}\n')
         return (skey.strip(), pkey.strip())
 
     def _from_env(self) -> None:
-        self.host = self._get_env("HOST")
-        self.target_host = self._get_env("TARGET_HOST")
-        self.users = self._get_env("USERS").split(",")
+        self.host = self._get_env("HOST", default="")
+        self.target_host = self._get_env("TARGET_HOST", default="")
+        self.users = self._get_env("USERS", default="").split(",")
 
         self.port = int(self._get_env("PORT", default="443", required=False))
         self.target_port = int(
             self._get_env("TARGET_PORT", default="443", required=False)
         )
-        self.log_level = self._get_env("LOG_LEVEL", default="warn", required=False)
+        self.log_level = self._get_env("LOG_LEVEL", default="warning", required=False)
 
-        self.private_key = self._get_env("PRIVATE_KEY", default=None, required=False)
-        if self.private_key == None:
-            print(f"Private key not provided.", flush=True)
+        self.private_key = self._get_env("PRIVATE_KEY", default="", required=False)
+        if len(self.private_key) == 0:
+            print("Private key not provided.")
             if not KEY_FILE.exists():
                 print(f"Key file {KEY_FILE} not found. Generating new keys...")
                 self.private_key, _ = self._parse_xray_x25519_output(
@@ -105,13 +105,11 @@ class d2args:
             ).decode()
         )
 
-        self.xpath = self._get_env("XHTTP_PATH", default=None, required=False)
-        if self.xpath == None:
-            print(f"XHTTP path not provided.", flush=True)
+        self.xpath = self._get_env("XHTTP_PATH", default="", required=False)
+        if len(self.xpath) == 0:
+            print("XHTTP path not provided.")
             if not XHTTP_PATH_FILE.exists():
-                print(
-                    f"XHTTP path file {XHTTP_PATH_FILE} not found. Generating a new path..."
-                )
+                print(f"XHTTP path file {XHTTP_PATH_FILE} not found. Generating a new path...")
                 self.xpath = self._gen_xpath()
                 with open(XHTTP_PATH_FILE, "w") as f:
                     f.write(self.xpath)
@@ -120,43 +118,31 @@ class d2args:
                 with open(XHTTP_PATH_FILE, "r") as f:
                     self.xpath = f.read().strip()
 
-        block_cn: str = self._get_env("BLOCK_CN", default="true", required=False)
-        self.block_cn = block_cn.lower() == "true".lower()
-        block_ads: str = self._get_env("BLOCK_ADS", default="true", required=False)
-        self.block_ads = block_ads.lower() == "true".lower()
-
-        self.rules = []
-
-        # block ads first
-        if self.block_ads:
-            with open(RULES_ADS, "r") as f:
-                self.rules.append(f.read())
-
-        if self.block_cn:
-            with open(RULES_CN, "r") as f:
-                self.rules.append(f.read())
+        self.block_cn = self._get_env("BLOCK_CN", default="true", required=False).lower() == "true".lower()
+        self.block_ads = self._get_env("BLOCK_ADS", default="true", required=False).lower() == "true".lower()
+        self.block_local = self._get_env("BLOCK_LOCAL", default="true", required=False).lower() == "true".lower()
 
     def __str__(self) -> str:
         ret = (
-            f"Host: {self.host}\n"
-            f"Port: {self.port}\n"
-            f"Target Port: {self.target_port}\n"
-            f"Target Host: {self.target_host}\n"
-            f"XHTTP Path: {self.xpath}\n"
-            f"Block CN: {self.block_cn}\n"
-            f"Block ADs: {self.block_ads}\n"
-            f"Log Level: {self.log_level}\n"
-            f"Users: {', '.join(self.users)}\n"
-            f"Public Key: {self.public_key}"
+            f"TARGET_PORT: {self.target_port}\n"
+            f"TARGET_HOST: {self.target_host}\n"
+            f"XHTTP_PATH: {self.xpath}\n"
+            f"BLOCK_CN: {self.block_cn}\n"
+            f"BLOCK_ADS: {self.block_ads}\n"
+            f"BLOCK_LOCAL: {self.block_local}\n"
+            f"LOG_LEVEL: {self.log_level}\n"
+            f"USERS: {', '.join(self.users)}\n"
+            f"PUBLIC_KEY: {self.public_key}"
         )
         return ret
 
     def get_shareable_links(self) -> dict[str, str]:
-        ret = {}
+        ret : dict[str,str] = {}
         for user in self.users:
             ret[user] = (
                 f"vless://{urllib.parse.quote(user)}@{self.host}:{self.port}/?"
-                "type=xhttp&"
+                "type=tcp&"
+                "flow=xtls-rprx-vision&"
                 f"path={urllib.parse.quote(self.xpath)}&"
                 "security=reality&"
                 f"sni={self.target_host}&"
@@ -179,22 +165,29 @@ def process_directory(
                 with open(full_path[:-3], "w") as df:
                     template: jinja2.Template = jinja2.Template(sf.read())
                     df.write(template.render(**vars))
-                    print(f"Processed template {full_path}.", flush=True)
+                    print(f"Processed template {full_path}.")
             if delete_template:
                 subprocess.check_call(f"rm {full_path}", shell=True)
 
 
 def build_users_json(users: list[str]) -> str:
-    return ", ".join(['{"id": "' + item + '", "flow": ""}' for item in users])
+    return ",\n".join(
+        json.dumps(
+            {
+                "id": user_id,
+                "flow": "xtls-rprx-vision",
+            },
+            separators=(",", ":"),
+        )
+        for user_id in users
+    )
 
-
-def build_jinja_dict(args: d2args) -> dict[str, str]:
-    jinja_dict: dict[str, str] = dict()
+def build_jinja_dict(args: d2args) -> dict[str, Any]:
+    jinja_dict: dict[str, Any] = dict()
     jinja_dict["PORT"] = str(args.port)
 
     jinja_dict["TARGET_HOST"] = args.target_host
     jinja_dict["TARGET_PORT"] = str(args.target_port)
-    jinja_dict["XHTTP_PATH"] = args.xpath
 
     jinja_dict["LOG_DIR"] = str(LOG_DIR)
     jinja_dict["LOG_LEVEL"] = args.log_level
@@ -202,23 +195,25 @@ def build_jinja_dict(args: d2args) -> dict[str, str]:
     jinja_dict["USERS"] = build_users_json(args.users)
     jinja_dict["PRIVATE_KEY"] = args.private_key
 
-    jinja_dict["RULES"] = ",".join(args.rules)
+    jinja_dict["BLOCK_CN"] = args.block_cn
+    jinja_dict["BLOCK_ADS"] = args.block_ads
+    jinja_dict["BLOCK_LOCAL"] = args.block_local
 
     return jinja_dict
 
 
 def main():
-    print(f"Initializing d2ray...", flush=True)
+    print("Initializing d2ray...")
     args = d2args()
 
-    print(f"\nConfiguration:\n{str(args)}\n", flush=True)
+    print(f"\nConfiguration:\n{str(args)}\n")
 
     template = build_jinja_dict(args)
 
-    print(f"Processing config files...", flush=True)
+    print("Processing config files...")
     process_directory("/opt/xray", template)
 
-    print(f"Generating shareable links...", flush=True)
+    print("Generating shareable links...")
     links = args.get_shareable_links()
 
     for user, link in links.items():
@@ -231,7 +226,7 @@ def main():
             f"qrencode -o {str(dir.joinpath('qrcode.png'))} < {linkf}", shell=True
         )
         print("")
-        print(f'User "{user}":', flush=True)
+        print(f'User "{user}":')
         print(f"{link}")
         print(
             subprocess.check_output(
@@ -240,7 +235,7 @@ def main():
         )
         print("")
 
-    print(f"Initialization completed.\n", flush=True)
+    print("Initialization completed.\n")
 
 
 main()

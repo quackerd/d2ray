@@ -1,14 +1,13 @@
 #!/bin/sh
+set -xe
+
 # create directories
-mkdir -p /etc/d2ray/logs/xray
-mkdir -p /etc/d2ray/logs/supervisord
+mkdir -p /etc/d2ray/logs
 mkdir -p /etc/d2ray/certs
 rm -rf /etc/d2ray/users
 
 python3 /opt/init.py
-retval=$?
-if [ $retval -ne 0 ]; then
-    exit $retval
-fi
 
-exec /usr/bin/supervisord -c /opt/supervisord.conf
+chown -R docker:docker /etc/d2ray
+
+exec su-exec docker:docker /opt/xray/xray -c /opt/xray/d2ray.json

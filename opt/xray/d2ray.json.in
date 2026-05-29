@@ -1,19 +1,78 @@
 {
     "log": {
       "loglevel": "{{LOG_LEVEL}}",
-      "access": "{{LOG_DIR}}/xray/access.log",
-      "error": "{{LOG_DIR}}/xray/error.log"
+      "dnsLog": true,
+      "access": "{{LOG_DIR}}/access.log",
+      "error": "{{LOG_DIR}}/error.log"
+    },
+    "dns": {
+      "hosts": {
+        "dns.google": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ],
+        "cloudflare-dns.com": [
+          "1.1.1.1",
+          "1.0.0.1"
+        ]
+      },
+      "servers": [
+        "https+local://dns.google/dns-query",
+        "https+local://cloudflare-dns.com/dns-query"
+      ],
+      "queryStrategy": "UseIP",
+      "disableCache": false
     },
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
-          {{ RULES }}
+          {% if BLOCK_LOCAL %}
+          {
+              "type": "field",
+              "ip": [
+                  "geoip:private"
+              ],
+              "outboundTag": "block"
+          },
+          {% endif %}
+
+          {% if BLOCK_ADS %}
+          {
+              "type": "field",
+              "domain": [
+                  "geosite:category-ads-all"
+              ],
+              "outboundTag": "block"
+          },
+          {% endif %}
+
+          {% if BLOCK_CN %}
+          {
+              "type": "field",
+              "domain": [
+                  "geosite:cn"
+              ],
+              "outboundTag": "block"
+          },
+          {
+              "type": "field",
+              "ip": [
+                  "geoip:cn"
+              ],
+              "outboundTag": "block"
+          },
+          {% endif %}
+          {
+            "type": "field",
+            "network": "tcp,udp",
+            "outboundTag": "direct"
+          }
         ]
     },
     "inbounds": [
       {
         "listen": "0.0.0.0",
-        "port": {{ PORT }},
+        "port": "8443",
         "protocol": "vless",
         "settings": {
           "clients": [
@@ -22,10 +81,7 @@
           "decryption": "none"
         },
         "streamSettings": {
-          "network": "xhttp",
-          "xhttpSettings": {
-              "path": "{{ XHTTP_PATH }}"
-          },
+          "network": "raw",
           "security": "reality",
           "realitySettings": {
             "show": false,
@@ -37,15 +93,15 @@
             "privateKey": "{{ PRIVATE_KEY }}",
             "shortIds": [
               ""
-            ],
-            "sockopt": {
-              "tcpFastOpen": true,
-              "tcpNoDelay": true
-            }
+            ]
+          },
+          "sockopt": {
+              "tcpFastOpen": true
           }
         },
         "sniffing": {
           "enabled": true,
+          "routeOnly": true,
           "destOverride": [
               "http",
               "tls",

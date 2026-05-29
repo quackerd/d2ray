@@ -4,21 +4,21 @@ networks:
 
 services:
   d2ray:
-    image: quackerd/d2ray
+    image: d2ray
     container_name: d2ray
     ports:
-      - 8443:8443
+      - 443:8443
     environment:
-      - HOST=myvps.com
-      - PORT=8443
-      - TARGET_HOST=www.apple.com
+      - HOST=example.com
+      - PORT=443
+      - TARGET_HOST=LOCAL
       - TARGET_PORT=443
       - USERS=alice,bob,eve
       - BLOCK_CN=true
       - BLOCK_ADS=true
-      - XHTTP_PATH=/examplepath # Change me
+      - BLOCK_LOCAL=true
       - PRIVATE_KEY=KE5MCI5e395fub55O1lsNPzvWw9nNAyCaecRSp3BvHg # Do NOT use this random key
-      - LOG_LEVEL=warn
+      - LOG_LEVEL=warning
     restart: unless-stopped
     networks:
       - d2ray_br

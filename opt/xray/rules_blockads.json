@@ -1,7 +1,0 @@
-{
-    "type": "field",
-    "domain": [
-        "geosite:category-ads-all"
-    ],
-    "outboundTag": "block"
-}
