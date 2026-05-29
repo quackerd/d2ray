@@ -4,14 +4,14 @@ networks:
 
 services:
   d2ray:
-    image: d2ray
+    image: quackerd/d2ray:latest
     container_name: d2ray
     ports:
       - 443:8443
     environment:
-      - HOST=example.com
+      - HOST=myhost.com
       - PORT=443
-      - TARGET_HOST=LOCAL
+      - TARGET_HOST=example.com
       - TARGET_PORT=443
       - USERS=alice,bob,eve
       - BLOCK_CN=true
