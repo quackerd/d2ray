@@ -22,7 +22,7 @@ jobs:
   docker:
     runs-on: linux-amd64
     container:
-      image: docker:27-cli
+      image: docker:cli
 
     steps:
       - name: Install Node and Docker CLI
