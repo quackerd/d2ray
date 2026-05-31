@@ -46,6 +46,24 @@
           },
           {% endif %}
 
+          {# domain & IP whitelist after ADs #}
+          {
+            "type": "field",
+            "domain": [
+              "geosite:google",
+              "geosite:telegram",
+              "geosite:github"
+            ],
+            "outboundTag": "direct"
+          },
+          {
+            "type": "field",
+            "ip": [
+              "geoip:telegram"
+            ],
+            "outboundTag": "direct"
+          },
+
           {% if BLOCK_CN %}
           {
               "type": "field",
@@ -62,6 +80,7 @@
               "outboundTag": "block"
           },
           {% endif %}
+
           {
             "type": "field",
             "network": "tcp,udp",
