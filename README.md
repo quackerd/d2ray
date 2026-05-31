@@ -29,9 +29,6 @@ If `PRIVATE_KEY` is provided, d2ray uses that key. Otherwise, d2ray generates a 
 To make d2ray regenerate a new key pair, manually delete the key file `/etc/xray/certs/keys` from the mounted volume.
 
 ## How To Update?
-- `docker compose down`
 - `docker compose pull`
+- `docker compose down`
 - `docker compose up -d`
-
-## Notes
-- The old xtls-vision + TLS + Nginx fallback has been branched out to the `vision` branch.
