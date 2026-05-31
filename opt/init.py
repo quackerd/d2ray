@@ -10,7 +10,6 @@ from typing import Any
 import jinja2
 
 CONFIG_DIR = pathlib.Path("/etc/d2ray")
-XHTTP_PATH_FILE = CONFIG_DIR.joinpath("certs/xpath")
 KEY_FILE = CONFIG_DIR.joinpath("certs/keys")
 LOG_DIR = CONFIG_DIR.joinpath("logs")
 QR_DIR = CONFIG_DIR.joinpath("users")
@@ -26,7 +25,6 @@ class d2args:
     port: int
     target_port: int
     target_host: str
-    xpath: str
     block_cn: bool
     block_ads: bool
     block_local: bool
@@ -48,11 +46,11 @@ class d2args:
                 return default
         return env
 
-    @staticmethod
-    def _gen_xpath(N: int = 16) -> str:
-        return "/" + "".join(
-            random.choices(string.ascii_lowercase + string.digits, k=N)
-        )
+    # @staticmethod
+    # def _gen_xpath(N: int = 16) -> str:
+    #     return "/" + "".join(
+    #         random.choices(string.ascii_lowercase + string.digits, k=N)
+    #     )
 
     @staticmethod
     def _parse_xray_x25519_output(stdout: str) -> tuple[str, str]:
@@ -105,28 +103,16 @@ class d2args:
             ).decode()
         )
 
-        self.xpath = self._get_env("XHTTP_PATH", default="", required=False)
-        if len(self.xpath) == 0:
-            print("XHTTP path not provided.")
-            if not XHTTP_PATH_FILE.exists():
-                print(f"XHTTP path file {XHTTP_PATH_FILE} not found. Generating a new path...")
-                self.xpath = self._gen_xpath()
-                with open(XHTTP_PATH_FILE, "w") as f:
-                    f.write(self.xpath)
-            else:
-                print(f"Reading from XHTTP path file {XHTTP_PATH_FILE} ...")
-                with open(XHTTP_PATH_FILE, "r") as f:
-                    self.xpath = f.read().strip()
-
         self.block_cn = self._get_env("BLOCK_CN", default="true", required=False).lower() == "true".lower()
         self.block_ads = self._get_env("BLOCK_ADS", default="true", required=False).lower() == "true".lower()
         self.block_local = self._get_env("BLOCK_LOCAL", default="true", required=False).lower() == "true".lower()
 
     def __str__(self) -> str:
         ret = (
+            f"HOST: {self.host}\n"
+            f"PORT: {self.port}\n"
             f"TARGET_PORT: {self.target_port}\n"
             f"TARGET_HOST: {self.target_host}\n"
-            f"XHTTP_PATH: {self.xpath}\n"
             f"BLOCK_CN: {self.block_cn}\n"
             f"BLOCK_ADS: {self.block_ads}\n"
             f"BLOCK_LOCAL: {self.block_local}\n"
@@ -143,7 +129,6 @@ class d2args:
                 f"vless://{urllib.parse.quote(user)}@{self.host}:{self.port}/?"
                 "type=tcp&"
                 "flow=xtls-rprx-vision&"
-                f"path={urllib.parse.quote(self.xpath)}&"
                 "security=reality&"
                 f"sni={self.target_host}&"
                 "fp=chrome&"

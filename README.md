@@ -15,7 +15,7 @@ d2ray is a single Docker container that provides easy 5-minute setups and braind
     - `BLOCK_LOCAL`: blocks private IPs. `Optional, default = true`.
     - `PRIVATE_KEY` : server's private key. `Optional`.
     - `USERS`: comma separated list of usernames that can access Xray. `REQUIRED`.
-    - `LOG_LEVEL`: the verbosity of Xray logs. `Optional, default = warning`.
+    - `LOG_LEVEL`: the verbosity of [Xray logs](https://xtls.github.io/en/config/log.html). `Optional, default = warning`.
 3. `docker compose up -d`
 4. Check the container log using `docker logs` for per user shareable links and QR codes supported by most Xray apps. These can also be found under `/etc/xray/users/[USERNAME]` folders.
 5. Test your connection.

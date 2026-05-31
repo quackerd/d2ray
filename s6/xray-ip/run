@@ -1,0 +1,6 @@
+#!/bin/sh
+set -euo pipefail
+
+exec 2>&1
+
+exec s6-setuidgid docker /opt/xray/xray  -c /opt/xray/d2ray-ip.json

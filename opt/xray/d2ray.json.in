@@ -24,18 +24,8 @@
       "disableCache": false
     },
     "routing": {
-        "domainStrategy": "IPIfNonMatch",
+        "domainStrategy": "AsIs",
         "rules": [
-          {% if BLOCK_LOCAL %}
-          {
-              "type": "field",
-              "ip": [
-                  "geoip:private"
-              ],
-              "outboundTag": "block"
-          },
-          {% endif %}
-
           {% if BLOCK_ADS %}
           {
               "type": "field",
@@ -46,22 +36,17 @@
           },
           {% endif %}
 
-          {# domain & IP whitelist after ADs #}
           {
             "type": "field",
             "domain": [
               "geosite:google",
+              "geosite:microsoft",
+              "geosite:apple",
               "geosite:telegram",
-              "geosite:github"
+              "geosite:github",
+              "geosite:mozilla"
             ],
-            "outboundTag": "direct"
-          },
-          {
-            "type": "field",
-            "ip": [
-              "geoip:telegram"
-            ],
-            "outboundTag": "direct"
+            "outboundTag": "ip-audit"
           },
 
           {% if BLOCK_CN %}
@@ -72,26 +57,19 @@
               ],
               "outboundTag": "block"
           },
-          {
-              "type": "field",
-              "ip": [
-                  "geoip:cn"
-              ],
-              "outboundTag": "block"
-          },
           {% endif %}
 
           {
             "type": "field",
             "network": "tcp,udp",
-            "outboundTag": "direct"
+            "outboundTag": "ip-audit"
           }
         ]
     },
     "inbounds": [
       {
         "listen": "0.0.0.0",
-        "port": "8443",
+        "port": 8443,
         "protocol": "vless",
         "settings": {
           "clients": [
@@ -131,8 +109,21 @@
     ],
     "outbounds": [
         {
-            "protocol": "freedom",
-            "tag": "direct"
+          "protocol": "socks",
+            "tag": "ip-audit",
+            "settings": {
+              "servers": [
+                {
+                  "address": "127.0.0.1",
+                  "port": 1080
+                }
+              ]
+            },
+            "streamSettings": {
+              "sockopt": {
+                "domainStrategy": "UseIP"
+              }
+            }
         },
         {
             "protocol": "blackhole",

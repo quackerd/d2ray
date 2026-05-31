@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # install packages
-RUN apk add --no-cache python3 py3-jinja2 libqrencode-tools su-exec
+RUN apk add --no-cache python3 py3-jinja2 libqrencode-tools s6-overlay
 
 RUN addgroup -g 1000 -S docker && \
     adduser -u 1000 -G docker -S docker
@@ -35,5 +35,17 @@ EOF
 COPY ./opt /opt/
 RUN chown -R docker:docker /opt/xray
 
+#
+# Copy s6 service files
+#
+COPY --chown=root:root ./s6 /etc/s6-overlay/s6-rc.d/
+RUN <<EOF
+set -euo pipefail
+
+chmod +x /etc/s6-overlay/s6-rc.d/init/up
+chmod +x /etc/s6-overlay/s6-rc.d/xray/run
+chmod +x /etc/s6-overlay/s6-rc.d/xray-ip/run
+EOF
+
 VOLUME /etc/d2ray
-CMD ["sh", "/opt/init.sh"]
+ENTRYPOINT ["/init"]

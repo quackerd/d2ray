@@ -1,0 +1,88 @@
+{
+  "log": {
+      "loglevel": "{{LOG_LEVEL}}",
+      "dnsLog": true,
+      "access": "{{LOG_DIR}}/access_ip.log",
+      "error": "{{LOG_DIR}}/error_ip.log"
+  },
+
+  "dns": {
+      "hosts": {
+        "dns.google": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ],
+        "cloudflare-dns.com": [
+          "1.1.1.1",
+          "1.0.0.1"
+        ]
+      },
+      "servers": [
+        "https+local://dns.google/dns-query",
+        "https+local://cloudflare-dns.com/dns-query"
+      ],
+      "queryStrategy": "UseIP",
+      "disableCache": false
+  },
+
+  "inbounds": [
+    {
+      "tag": "ipaudit-in",
+      "listen": "127.0.0.1",
+      "port": 1080,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    }
+  ],
+
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {% if BLOCK_LOCAL %}
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "block"
+      },
+      {% endif %}
+      {
+        "type": "field",
+        "ip": [
+          "geoip:telegram"
+        ],
+        "outboundTag": "direct"
+      },
+      {% if BLOCK_CN %}
+      {
+        "type": "field",
+        "ip": [
+          "geoip:cn"
+        ],
+        "outboundTag": "block"
+      },
+      {% endif %}
+
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}
