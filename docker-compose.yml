@@ -4,14 +4,14 @@ networks:
 
 services:
   d2ray:
-    image: d2ray
+    image: quackerd/d2ray:latest
     container_name: d2ray
     ports:
       - 443:8443
     environment:
-      - HOST=localhost
+      - HOST=myhost.com
       - PORT=443
-      - TARGET_HOST=freebsd.org
+      - TARGET_HOST=mytarget.com
       - TARGET_PORT=443
       - USERS=alice,bob,eve
       - BLOCK_CN=true
