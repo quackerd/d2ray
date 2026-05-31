@@ -7,7 +7,7 @@ RUN addgroup -g 1000 -S docker && \
     adduser -u 1000 -G docker -S docker
 
 # download packages
-RUN <<EOF
+RUN <<'EOF'
 set -euo pipefail
 
 apk add --no-cache --virtual .build-deps unzip curl jq wget
@@ -39,7 +39,7 @@ RUN chown -R docker:docker /opt/xray
 # Copy s6 service files
 #
 COPY --chown=root:root ./s6 /etc/s6-overlay/s6-rc.d/
-RUN <<EOF
+RUN <<'EOF'
 set -euo pipefail
 
 chmod +x /etc/s6-overlay/s6-rc.d/init/up
