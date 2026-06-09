@@ -8,7 +8,7 @@ RUN addgroup -g 1000 -S docker && \
 
 # download packages
 RUN <<'EOF'
-set -euo pipefail
+set -euxo pipefail
 
 apk add --no-cache --virtual .build-deps unzip curl jq wget
 
