@@ -8,7 +8,7 @@ RUN addgroup -g 1000 -S docker && \
 
 # download packages
 RUN <<'EOF'
-set -euxo pipefail
+set -euo pipefail
 
 apk add --no-cache --virtual .build-deps unzip curl jq wget
 
@@ -21,13 +21,16 @@ rm /tmp/xray.zip
 
 XRAY_VERSION=$(printf '%s' "$JSON" | jq -r '.tag_name')
 printf '%s\n' "$XRAY_VERSION" > /opt/xray/XRAY_VERSION
+echo "XRAY: $XRAY_VERSION"
 
 JSON=$(curl -fsSL https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases/latest)
 DOWNLOAD_URL=$(printf '%s' "$JSON" | jq -r '.assets[] | select(.name | endswith("geoip.dat")) | .browser_download_url')
 wget -q -O /opt/xray/geoip.dat "${DOWNLOAD_URL}"
+echo "GeoIP: $DOWNLOAD_URL"
 
 DOWNLOAD_URL=$(printf '%s' "$JSON" | jq -r '.assets[] | select(.name | endswith("geosite.dat")) | .browser_download_url')
 wget -q -O /opt/xray/geosite.dat "${DOWNLOAD_URL}"
+echo "GeoSite: $DOWNLOAD_URL"
 
 apk del .build-deps
 EOF
