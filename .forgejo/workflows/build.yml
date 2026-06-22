@@ -53,3 +53,7 @@ jobs:
           pull: true
           tags: |
             ${{ env.IMAGE }}:latest
+
+      - name: Clean Up
+        if: always()
+        run: docker system prune -af --volumes
