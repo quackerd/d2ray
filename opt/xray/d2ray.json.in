@@ -68,7 +68,7 @@
     },
     "inbounds": [
       {
-        "listen": "0.0.0.0",
+        "listen": "::",
         "port": 8443,
         "protocol": "vless",
         "settings": {
