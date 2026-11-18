@@ -30,5 +30,4 @@ To make d2ray regenerate a new key pair, manually delete the key file `/etc/xray
 
 ## How To Update?
 - `docker compose pull`
-- `docker compose down`
 - `docker compose up -d`
